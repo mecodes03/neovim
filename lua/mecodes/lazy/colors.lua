@@ -39,7 +39,7 @@ return {
 				styles = {
 					bold = false,
 					italic = false,
-					transparent = true,
+					transparency = true,
 				},
 				enable = { terminal = true },
 			})
