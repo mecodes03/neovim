@@ -62,6 +62,15 @@ return {
 						})
 					end,
 
+					["solidity_ls_nomicfoundation"] = function()
+						local lspconfig = require("lspconfig")
+						local util = require("lspconfig.util")
+						lspconfig.solidity_ls_nomicfoundation.setup({
+							capabilities = capabilities,
+							root_dir = util.root_pattern("foundry.toml", ".git", "hardhat.config.js"), -- You can adjust as needed
+						})
+					end,
+
 					-- commenting out cos I think the default function will take care of it
 					-- ["html"] = function()
 					-- 	local lspconfig = require("lspconfig")

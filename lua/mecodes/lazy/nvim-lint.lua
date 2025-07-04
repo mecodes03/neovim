@@ -1,3 +1,11 @@
+function LintProgress()
+	local linters = require("lint").get_running()
+	if #linters == 0 then
+		return "󰦕"
+	end
+	return "󱉶 " .. table.concat(linters, ", ")
+end
+
 return {
 	"https://github.com/mfussenegger/nvim-lint.git",
 	config = function()
