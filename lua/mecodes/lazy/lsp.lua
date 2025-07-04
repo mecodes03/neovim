@@ -1,103 +1,211 @@
 return {
-	"neovim/nvim-lspconfig",
-	dependencies = {
-		"williamboman/mason.nvim",
-		"williamboman/mason-lspconfig.nvim",
-		"hrsh7th/cmp-nvim-lsp",
-		"hrsh7th/cmp-buffer",
-		"hrsh7th/cmp-path",
-		"hrsh7th/cmp-cmdline",
-		"hrsh7th/nvim-cmp",
-		"L3MON4D3/LuaSnip",
-		"saadparwaiz1/cmp_luasnip",
-		"j-hui/fidget.nvim",
-	},
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			"j-hui/fidget.nvim",
 
-	config = function()
-		local cmp = require('cmp')
-		local cmp_lsp = require("cmp_nvim_lsp")
-		local capabilities = vim.tbl_deep_extend(
-			"force",
-			{},
-			vim.lsp.protocol.make_client_capabilities(),
-			cmp_lsp.default_capabilities())
+			-- for autocompletions
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-cmdline",
+			"hrsh7th/nvim-cmp",
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
+		},
 
-		require("fidget").setup({})
-		require("mason").setup()
-		require("mason-lspconfig").setup({
-			ensure_installed = {
-				"lua_ls",
-				"rust_analyzer",
-				"ts_ls",
-				"gopls",
-				"html",
-				"tailwindcss",
-				"dockerls",
-			},
-			handlers = {
-				function(server_name) -- default handler (optional)
+		config = function()
+			local cmp = require("cmp")
+			local cmp_lsp = require("cmp_nvim_lsp")
 
-					require("lspconfig")[server_name].setup {
-						capabilities = capabilities
-					}
-				end,
+			local capabilities = vim.tbl_deep_extend(
+				"force",
+				{},
+				vim.lsp.protocol.make_client_capabilities(),
+				cmp_lsp.default_capabilities()
+			)
 
-				["lua_ls"] = function()
-					local lspconfig = require("lspconfig")
-					lspconfig.lua_ls.setup {
-						capabilities = capabilities,
-						settings = {
-							Lua = {
-								diagnostics = {
-									globals = { "vim", "it", "describe", "before_each", "after_each" },
-								}
-							}
-						}
-					}
-				end,
+			require("fidget").setup({})
+			require("mason").setup()
+			require("mason-lspconfig").setup({
+				ensure_installed = {
+					"lua_ls",
+					"rust_analyzer",
+					-- "ts_ls", -- commenting this out so we can use some other faster ts lsp :)
+					"gopls",
+					"html",
+					"tailwindcss",
+					"dockerls",
+					-- haven't added solidity, but we have installed using Mason
+				},
 
-				["html"] = function()
-					local lspconfig = require("lspconfig")
-					lspconfig.html.setup({
-						capabilities = capabilities,
-						filetypes = { "html", "tsx", "jsx" },
-					})
-				end,
+				handlers = {
+					function(server_name) -- default handler (optional)
+						require("lspconfig")[server_name].setup({
+							capabilities = capabilities,
+						})
+					end,
+
+					["lua_ls"] = function()
+						local lspconfig = require("lspconfig")
+						lspconfig.lua_ls.setup({
+							capabilities = capabilities,
+							settings = {
+								Lua = {
+									diagnostics = {
+										globals = { "vim", "it", "describe", "before_each", "after_each" },
+									},
+								},
+							},
+						})
+					end,
+
+					-- commenting out cos I think the default function will take care of it
+					-- ["html"] = function()
+					-- 	local lspconfig = require("lspconfig")
+					-- 	lspconfig.html.setup({
+					-- 		capabilities = capabilities,
+					-- 		filetypes = { "html", "tsx", "jsx" },
+					-- 	})
+					-- end,
+				},
+			})
+
+			local kind_icons = {
+				Text = "󰉿",
+				Method = "m",
+				Function = "󰊕",
+				Constructor = "",
+				Field = "",
+				Variable = "󰆧",
+				Class = "󰌗",
+				Interface = "",
+				Module = "",
+				Property = "",
+				Unit = "",
+				Value = "󰎠",
+				Enum = "",
+				Keyword = "󰌋",
+				Snippet = "",
+				Color = "󰏘",
+				File = "󰈙",
+				Reference = "",
+				Folder = "󰉋",
+				EnumMember = "",
+				Constant = "󰇽",
+				Struct = "",
+				Event = "",
+				Operator = "󰆕",
+				TypeParameter = "󰊄",
 			}
-		})
 
-		local cmp_select = { behavior = cmp.SelectBehavior.Select }
+			local cmp_select = { behavior = cmp.SelectBehavior.Select }
+			local luasnip = require("luasnip")
 
-		cmp.setup({
-			snippet = {
-				expand = function(args)
-					require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-				end,
-			},
-			mapping = cmp.mapping.preset.insert({
-				['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-				['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-				['<C-y>'] = cmp.mapping.confirm({ select = true }),
-				["<C-Space>"] = cmp.mapping.complete(),
-			}),
-			sources = cmp.config.sources({
-				{ name = 'nvim_lsp' },
-				{ name = 'luasnip' }, -- For luasnip users.
-			}, {
-					{ name = 'buffer' },
-				})
-		})
+			cmp.setup({
+				snippet = {
+					expand = function(args)
+						luasnip.lsp_expand(args.body) -- For `luasnip` users.
+					end,
+				},
+				window = {
+					-- documentation = cmp.config.window.bordered(),
+					-- completion = cmp.config.window.bordered(),
+				},
+				mapping = cmp.mapping.preset.insert({
+					-- Scroll the documentation window [b]ack / [f]orward
+					["<C-b>"] = cmp.mapping.scroll_docs(-4),
+					["<C-f>"] = cmp.mapping.scroll_docs(4),
 
-		vim.diagnostic.config({
-			-- update_in_insert = true,
-			float = {
-				focusable = false,
-				style = "minimal",
-				border = "rounded",
-				source = "always",
-				header = "",
-				prefix = "",
-			},
-		})
-	end
+					-- <c-l> will move you to the right of each of the expansion locations.
+					-- <c-h> is similar, except moving you backwards.
+					-- ["<C-l>"] = cmp.mapping(function()
+					-- 	if luasnip.expand_or_locally_jumpable() then
+					-- 		luasnip.expand_or_jump()
+					-- 	end
+					-- end, { "i", "s" }),
+					-- ["<C-h>"] = cmp.mapping(function()
+					-- 	if luasnip.locally_jumpable(-1) then
+					-- 		luasnip.jump(-1)
+					-- 	end
+					-- end, { "i", "s" }),
+
+					-- Accept ([y]es) the completion.
+					["<C-y>"] = cmp.mapping.confirm({ select = true }),
+					["<C-Space>"] = cmp.mapping.complete(),
+
+					-- Select next/previous item with Tab / Shift + Tab
+					["<Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_next_item(cmp_select)
+						elseif luasnip.expand_or_locally_jumpable() then
+							luasnip.expand_or_jump()
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<S-Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_prev_item(cmp_select)
+						elseif luasnip.locally_jumpable(-1) then
+							luasnip.jump(-1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+				}),
+
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+					{ name = "luasnip" }, -- For luasnip users.
+					{ name = "buffer" },
+					{ name = "path" },
+				}),
+
+				formatting = {
+					fields = { "kind", "abbr", "menu" },
+					format = function(entry, vim_item)
+						vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
+						vim_item.menu = ({
+							nvim_lsp = "[LSP]",
+							luasnip = "[Snippet]",
+							buffer = "[Buffer]",
+							path = "[Path]",
+						})[entry.source.name]
+						return vim_item
+					end,
+				},
+			})
+
+			vim.diagnostic.config({
+				-- update_in_insert = true,
+				float = {
+					focusable = false,
+					style = "minimal",
+					border = "rounded",
+					source = "always",
+					header = "",
+					prefix = "",
+				},
+			})
+		end,
+	},
+	-- I think we can move the below stuff into our handlers above, just like we have done for lua_ls
+	{
+		"pmizio/typescript-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+		config = function()
+			local api = require("typescript-tools.api")
+			require("typescript-tools").setup({
+				handlers = {
+					["textDocument/publishDiagnostics"] = api.filter_diagnostics(
+						-- Ignore 'This may be converted to an async function' diagnostics.
+						{ 80006 }
+					),
+				},
+			})
+		end,
+	},
 }
