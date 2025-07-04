@@ -1,5 +1,6 @@
 require("mecodes.remap")
 require("mecodes.lazy_init")
+require("mecodes.set")
 
 
 local augroup = vim.api.nvim_create_augroup
@@ -24,7 +25,7 @@ autocmd('TextYankPost', {
     callback = function()
         vim.highlight.on_yank({
             higroup = 'IncSearch',
-            timeout = 40,
+            timeout = 80,
         })
     end,
 })
