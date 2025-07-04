@@ -1,2 +1,109 @@
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>n", vim.cmd.Ex)
+
+-- vim.keymap.set("n", "<leader>n", vim.cmd.Ex)
+
+-- move lines (select visualy and then move up and down)
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+-- delete line space or something like than and yet have cursor in start
+vim.keymap.set("n", "J", "mzJ`z")
+
+-- up and down
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+
+-- up and down (trying)
+vim.keymap.set("n", "<C-k>", "<C-u>zz")
+vim.keymap.set("n", "<C-j>", "<C-d>zz")
+
+-- find and center (corsor stays in center)
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
+
+-- paste and still have the copied into clipboard
+vim.keymap.set("x", "<leader>p", [["_dP]])
+
+-- copy into sys clipboard
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
+vim.keymap.set("n", "<leader>Y", [["+Y]])
+
+-- save file
+vim.keymap.set("n", "<C-s>", "<cmd> w <CR>", opts)
+
+-- quit file
+vim.keymap.set("n", "<C-x>", "<cmd> q <CR>", opts)
+
+-- delete single character without copying into register
+vim.keymap.set("n", "x", '"_x', opts)
+
+-- Toggle line wrapping
+vim.keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", opts)
+
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+
+-- format
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+
+-- close
+vim.keymap.set("i", "<C-c>", "<Esc>")
+
+-- rename current word
+vim.keymap.set("n", "<leader>rr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+
+-- make file executable
+vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+
+-- commenting lines
+vim.keymap.set("v", "<leader>/", function()
+	local count = vim.v.count
+	vim.cmd.norm((count > 0 and count or "") .. "gcc")
+end)
+
+vim.keymap.set("n", "<leader>/", function()
+	local count = vim.v.count
+	if count > 0 then
+		count = count + 1 -- Include the current line
+	end
+	vim.cmd.norm((count > 0 and count or "") .. "gcc")
+end)
+
+vim.keymap.set("o", "<leader>/", function()
+	local count = vim.v.count
+	vim.cmd.norm((count > 0 and count or "") .. "gcc")
+end)
+
+vim.keymap.set("x", "<leader>/", function()
+	local count = vim.v.count
+	vim.cmd.norm((count > 0 and count or "") .. "gcc")
+end)
+
+-- Resize with arrows
+vim.keymap.set("n", "<Up>", ":resize -1<CR>", opts)
+vim.keymap.set("n", "<Down>", ":resize +1<CR>", opts)
+vim.keymap.set("n", "<Left>", ":vertical resize -2<CR>", opts)
+vim.keymap.set("n", "<Right>", ":vertical resize +2<CR>", opts)
+
+-- Buffers
+vim.keymap.set("n", "<Tab>", ":bnext<CR>", opts)
+vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", opts)
+vim.keymap.set("n", "<leader>x", ":bdelete!<CR>", opts) -- close buffer
+-- vim.keymap.set("n", "<leader>b", "<cmd> enew <CR>", opts) -- new buffer
+
+-- Window management
+vim.keymap.set("n", "<leader>v", "<C-w>v", opts) -- split window vertically
+vim.keymap.set("n", "<leader>h", "<C-w>s", opts) -- split window horizontally
+vim.keymap.set("n", "<leader>se", "<C-w>=", opts) -- make split windows equal width & height
+vim.keymap.set("n", "<leader>xs", ":close<CR>", opts) -- close current split window
+
+-- Navigate between splits (control based)
+vim.keymap.set("n", "<C-w>h", ":wincmd h<CR>", opts)
+vim.keymap.set("n", "<C-w>j", ":wincmd j<CR>", opts)
+vim.keymap.set("n", "<C-w>k", ":wincmd k<CR>", opts)
+vim.keymap.set("n", "<C-w>l", ":wincmd l<CR>", opts)
+
+-- moving
+vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
+vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
+vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
