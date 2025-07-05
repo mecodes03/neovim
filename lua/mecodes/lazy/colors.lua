@@ -39,7 +39,6 @@ return {
 				styles = {
 					bold = false,
 					italic = false,
-					transparency = true,
 				},
 				enable = { terminal = true },
 			})
