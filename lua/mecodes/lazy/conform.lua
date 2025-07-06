@@ -15,6 +15,15 @@ return {
 				scss = { "prettier" },
 				go = { "gofmt" },
 				html = { "prettier" },
+				solidity = { "forge_fmt" },
+			},
+
+			formatters = {
+				forge_fmt = {
+					command = "forge",
+					args = { "fmt", "--raw", "$FILENAME" },
+					stdin = false,
+				},
 			},
 			format_on_save = {
 				lsp_format = "fallback",
