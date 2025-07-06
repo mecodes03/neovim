@@ -31,13 +31,7 @@ local opts = { noremap = true, silent = true }
 vim.keymap.set("n", "<C-s>", "<cmd> w <CR>", opts)
 
 -- quit file
-vim.keymap.set("n", "<C-x>", function()
-	if vim.bo.modified then
-		vim.notify("You have unsaved changes!", vim.log.levels.WARN)
-	else
-		vim.cmd("q")
-	end
-end, opts)
+vim.keymap.set("n", "<C-x>", "<cmd> q <CR>", opts)
 
 -- delete single character without copying into register
 vim.keymap.set("n", "x", '"_x', opts)
