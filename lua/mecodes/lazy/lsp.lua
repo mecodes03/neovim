@@ -67,9 +67,28 @@ return {
 						local util = require("lspconfig.util")
 						lspconfig.solidity_ls_nomicfoundation.setup({
 							capabilities = capabilities,
+							-- on_attach =
 							root_dir = util.root_pattern("foundry.toml", ".git", "hardhat.config.js"), -- You can adjust as needed
 						})
 					end,
+					--
+					-- ["solidity_ls"] = function()
+					-- 	local lspconfig = require("lspconfig")
+					-- 	lspconfig.solidity_ls.setup({
+					-- 		cmd = { "vscode-solidity-server", "--stdio" },
+					-- 		filetypes = { "solidity" },
+					-- 		root_dir = lspconfig.util.root_pattern("hardhat.config.js", "foundry.toml", ".git"),
+					-- 		settings = {
+					-- 			solidity = {
+					-- 				compileUsingRemoteVersion = "latest",
+					-- 				defaultCompiler = "remote",
+					-- 				enabledAsYouTypeCompilationErrorCheck = true,
+					-- 				packageDefaultDependenciesContractsDirectory = "src",
+					-- 				packageDefaultDependenciesDirectory = "lib",
+					-- 			},
+					-- 		},
+					-- 	})
+					-- end,
 
 					-- commenting out cos I think the default function will take care of it
 					-- ["html"] = function()
