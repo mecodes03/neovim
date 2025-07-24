@@ -17,6 +17,7 @@ return {
 				go = { "gofmt" },
 				html = { "prettier" },
 				solidity = { "forge_fmt" },
+				nginx = { "nginxfmt" },
 			},
 
 			formatters = {
