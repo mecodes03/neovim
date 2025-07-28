@@ -62,6 +62,15 @@ return {
 						})
 					end,
 
+					-- ["ts_ls"] = function()
+					-- 	local lspconfig = require("lspconfig")
+					-- 	local util = require("lspconfig.util")
+					-- 	lspconfig.ts_ls.setup({
+					-- 		capabilities = capabilities,
+					-- 		root_dir = util.root_pattern(".git"), -- You can adjust as needed
+					-- 	})
+					-- end,
+
 					["solidity_ls_nomicfoundation"] = function()
 						local lspconfig = require("lspconfig")
 						local util = require("lspconfig.util")
