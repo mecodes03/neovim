@@ -13,6 +13,7 @@ vim.keymap.set("n", "J", "mzJ`z")
 -- up and down
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-f>", "<C-u>zz") -- this one seems fast.. or might be
 
 -- find and center (corsor stays in center)
 vim.keymap.set("n", "n", "nzzzv")
