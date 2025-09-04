@@ -148,8 +148,8 @@ return {
 					end,
 				},
 				window = {
-					-- documentation = cmp.config.window.bordered(),
-					-- completion = cmp.config.window.bordered(),
+					documentation = cmp.config.window.bordered(),
+					completion = cmp.config.window.bordered(),
 				},
 				mapping = cmp.mapping.preset.insert({
 					-- Scroll the documentation window [b]ack / [f]orward
@@ -219,7 +219,7 @@ return {
 			vim.diagnostic.config({
 				-- update_in_insert = true,
 				float = {
-					focusable = false,
+					focusable = true,
 					style = "minimal",
 					border = "rounded",
 					source = "always",
