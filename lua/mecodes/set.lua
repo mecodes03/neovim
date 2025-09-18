@@ -30,6 +30,6 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 -- doing this just so mouse doesn't move when accepting auto completions
-vim.o.mouse = ""
+-- vim.o.mouse = ""
 
 -- vim.opt.colorcolumn = "80"
