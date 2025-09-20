@@ -1,3 +1,4 @@
+---@param color string
 function ColorMyPencils(color)
 	local defaultColor = "rose-pine"
 	color = color or defaultColor
@@ -43,9 +44,7 @@ return {
 				enable = { terminal = true },
 			})
 
-			vim.cmd("colorscheme rose-pine")
-
-			ColorMyPencils()
+			ColorMyPencils("rose-pine")
 		end,
 	},
 	{
