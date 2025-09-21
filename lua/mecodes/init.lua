@@ -1,6 +1,6 @@
+require("mecodes.set")
 require("mecodes.remap")
 require("mecodes.lazy_init")
-require("mecodes.set")
 
 local augroup = vim.api.nvim_create_augroup
 local MecodesGroup = augroup("mecodes", {})

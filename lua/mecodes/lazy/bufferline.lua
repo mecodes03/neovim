@@ -7,7 +7,7 @@ return {
 		require("bufferline").setup({
 			options = {
 				diagnostics = "nvim_lsp",
-				separator_style = "slant", -- or "thin" | "padded_slant"
+				separator_style = "thin", -- or "thin" | "padded_slant" | "slant"
 				show_buffer_close_icons = false,
 				show_close_icon = false,
 			},
