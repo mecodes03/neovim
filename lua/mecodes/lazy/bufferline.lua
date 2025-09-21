@@ -4,6 +4,14 @@ return {
 	dependencies = "nvim-tree/nvim-web-devicons",
 	config = function()
 		vim.opt.termguicolors = true
-		require("bufferline").setup({})
+		require("bufferline").setup({
+			options = {
+				diagnostics = "nvim_lsp",
+				separator_style = "slant", -- or "thin" | "padded_slant"
+				show_buffer_close_icons = false,
+				show_close_icon = false,
+			},
+			highlights = require("rose-pine.plugins.bufferline"),
+		})
 	end,
 }
