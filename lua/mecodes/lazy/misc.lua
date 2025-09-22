@@ -3,10 +3,10 @@ return {
 		-- Detect tabstop and shiftwidth automatically
 		"tpope/vim-sleuth",
 	},
-	{
-		-- Hints keybinds
-		"folke/which-key.nvim",
-	},
+	-- {
+	-- 	-- Hints keybinds
+	-- 	"folke/which-key.nvim",
+	-- },
 	{
 		-- Autoclose parentheses, brackets, quotes, etc.
 		"windwp/nvim-autopairs",
