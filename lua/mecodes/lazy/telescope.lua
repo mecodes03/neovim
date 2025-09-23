@@ -17,7 +17,15 @@ return {
 					i = {
 						["<C-k>"] = actions.move_selection_previous, -- move to prev result
 						["<C-j>"] = actions.move_selection_next, -- move to next result
+
 						["<C-l>"] = actions.select_default, -- open file
+
+						["<C-d>"] = actions.preview_scrolling_down,
+						["<C-f>"] = actions.preview_scrolling_up,
+					},
+					n = {
+						["<C-d>"] = actions.preview_scrolling_down,
+						["<C-f>"] = actions.preview_scrolling_up,
 					},
 				},
 			},
@@ -28,8 +36,8 @@ return {
 				},
 			},
 		})
-
-		require("telescope").load_extension("ui-select")
+		pcall(require("telescope").load_extension, "fzf")
+		pcall(require("telescope").load_extension, "ui-select")
 
 		local builtin = require("telescope.builtin")
 

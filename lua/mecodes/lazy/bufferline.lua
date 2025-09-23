@@ -9,7 +9,7 @@ return {
 			options = {
 				style_preset = bufferline.style_preset.no_italic,
 				diagnostics = "nvim_lsp",
-				separator_style = "slant", -- or "thin" | "padded_slant" | "slant"
+				separator_style = "slope", -- or "thin" | "padded_slant" | "slant"
 				show_buffer_close_icons = false,
 				show_close_icon = false,
 				diagnostics_indicator = function(count, level)

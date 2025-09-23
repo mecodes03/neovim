@@ -153,8 +153,8 @@ return {
 				},
 				mapping = cmp.mapping.preset.insert({
 					-- Scroll the documentation window [b]ack / [f]orward
-					["<C-d>"] = cmp.mapping.scroll_docs(-4),
-					["<C-f>"] = cmp.mapping.scroll_docs(4),
+					["<C-f>"] = cmp.mapping.scroll_docs(-8),
+					["<C-d>"] = cmp.mapping.scroll_docs(8),
 
 					-- <c-l> will move you to the right of each of the expansion locations.
 					-- <c-h> is similar, except moving you backwards.

@@ -38,13 +38,13 @@ autocmd({ "BufWritePre" }, {
 autocmd("LspAttach", {
 	group = MecodesGroup,
 	callback = function(e)
-		local opts = { buffer = e.buf }
+		local opts = { buffer = e.buf, silent = true }
 		vim.keymap.set("n", "gd", function()
 			vim.lsp.buf.definition()
 		end, opts)
 		vim.keymap.set("n", "K", function()
-			vim.lsp.buf.hover({ border = "single", max_height = 25, max_width = 120 })
-		end, { desc = "Hover documentation", buffer = e.buf })
+			vim.lsp.buf.hover({ border = "rounded" })
+		end, { desc = "Hover documentation", silent = true, buffer = e.buf })
 		vim.keymap.set("n", "<leader>ws", function()
 			vim.lsp.buf.workspace_symbol()
 		end, opts)
