@@ -110,33 +110,7 @@ return {
 				},
 			})
 
-			local kind_icons = {
-				Text = "󰉿",
-				Method = "m",
-				Function = "󰊕",
-				Constructor = "",
-				Field = "",
-				Variable = "󰆧",
-				Class = "󰌗",
-				Interface = "",
-				Module = "",
-				Property = "",
-				Unit = "",
-				Value = "󰎠",
-				Enum = "",
-				Keyword = "󰌋",
-				Snippet = "",
-				Color = "󰏘",
-				File = "󰈙",
-				Reference = "",
-				Folder = "󰉋",
-				EnumMember = "",
-				Constant = "󰇽",
-				Struct = "",
-				Event = "",
-				Operator = "󰆕",
-				TypeParameter = "󰊄",
-			}
+			local kind_icons = require("mecodes.icons").kind
 
 			local cmp_select = { behavior = cmp.SelectBehavior.Select }
 			local luasnip = require("luasnip")
