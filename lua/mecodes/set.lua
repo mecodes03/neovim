@@ -11,6 +11,14 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.o.smartcase = true
 
+-- vim.opt.cursorline = true
+
+-- grep case-insensitive
+vim.opt.grepprg = "rg --vimgrep --smart-case"
+
+-- Ignore case in searches
+vim.o.ignorecase = true
+
 vim.opt.wrap = false
 
 vim.opt.swapfile = false
@@ -30,6 +38,6 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 -- doing this just so mouse doesn't move when accepting auto completions
--- vim.o.mouse = ""
+vim.o.mouse = ""
 
--- vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn = "80"
