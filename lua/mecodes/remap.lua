@@ -44,8 +44,8 @@ vim.keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", opts)
 
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
--- format
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+-- -- format
+-- vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 -- close
 vim.keymap.set("i", "<C-c>", "<Esc>")
@@ -95,3 +95,17 @@ vim.keymap.set("x", "<leader>/", function()
 	local count = vim.v.count
 	vim.cmd.norm((count > 0 and count or "") .. "gcc")
 end)
+
+vim.keymap.set("n", "<Esc>", "<cmd>noh<CR><Esc>", { desc = "Clear search highlights" })
+vim.keymap.set("n", "<leader>la", "<cmd>Lazy<cr>", { desc = "Lazy plugin manager" })
+
+-- mouse toggle
+vim.keymap.set("n", "<leader>tm", function()
+	if vim.o.mouse == "" then
+		vim.o.mouse = "a"
+		print("Mouse Enable")
+	else
+		vim.o.mouse = ""
+		print("Mouse Disable")
+	end
+end, { desc = "Toggle Mouse" })
