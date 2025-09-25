@@ -1,11 +1,15 @@
+local transparency = require("mecodes.transparency")
+
 ---@param color string
 function ColorMyPencils(color)
 	local defaultColor = "rose-pine"
 	color = color or defaultColor
 	vim.cmd.colorscheme(color)
 
-	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+	if transparency.IS_FORCING_TRANSPARENCY then
+		vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+	end
 end
 
 return {
@@ -15,7 +19,7 @@ return {
 		config = function()
 			require("tokyonight").setup({
 				style = "moon", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
-				transparent = true, -- Enable this to disable setting the background color
+				transparent = transparency.IS_FORCING_TRANSPARENCY, -- Enable this to disable setting the background color
 				terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
 				styles = {
 					-- Style to be applied to different syntax groups
@@ -29,6 +33,54 @@ return {
 			})
 		end,
 	},
+
+	{
+		"catppuccin/nvim",
+		name = "catppuccin",
+		priority = 1000,
+		config = function()
+			require("catppuccin").setup({
+				transparent_background = transparency.IS_FORCING_TRANSPARENCY,
+				term_colors = true,
+				no_italic = true,
+				no_bold = true,
+				integrations = {
+					cmp = true,
+					nvimtree = true,
+					treesitter = true,
+				},
+			})
+
+			-- if transparency.IS_FORCING_TRANSPARENCY then
+			-- 	transparency.force_transparency()
+			-- end
+		end,
+	},
+
+	-- {
+	-- 	"Rolv-Apneseth/onedark.nvim", -- colourscheme
+	-- 	name = "onedark",
+	-- 	--[[ dev = true, ]]
+	-- 	config = function()
+	-- 		-- local onedark = require("onedark")
+	-- 		-- if not onedark then
+	-- 		-- 	return
+	-- 		-- end
+	--
+	-- 		require("onedark").setup({
+	-- 			style = "darker",
+	-- 			transparent = transparency.IS_FORCING_TRANSPARENCY,
+	-- 			diagnostics = {
+	-- 				background = not transparency.IS_FORCING_TRANSPARENCY,
+	-- 			},
+	-- 		})
+	--
+	-- 		if transparency.IS_FORCING_TRANSPARENCY then
+	-- 			transparency.force_transparency()
+	-- 		end
+	-- 	end,
+	-- },
+
 	{
 		"rose-pine/neovim",
 		name = "rose-pine",
@@ -40,29 +92,12 @@ return {
 				styles = {
 					bold = false,
 					italic = false,
+					-- transparency = transparency.IS_FORCING_TRANSPARENCY, -- this is making everything transparent
 				},
 				enable = { terminal = true },
 			})
 
 			ColorMyPencils("rose-pine")
-		end,
-	},
-	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1000,
-		config = function()
-			require("catppuccin").setup({
-				transparent_background = false,
-				term_colors = true,
-				no_italic = true,
-				no_bold = true,
-				integrations = {
-					cmp = true,
-					nvimtree = true,
-					treesitter = true,
-				},
-			})
 		end,
 	},
 }
