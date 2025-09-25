@@ -1,6 +1,7 @@
 require("mecodes.set")
 require("mecodes.remap")
 require("mecodes.lazy_init")
+require("mecodes.transparency")
 
 local augroup = vim.api.nvim_create_augroup
 local MecodesGroup = augroup("mecodes", {})
@@ -43,8 +44,8 @@ autocmd("LspAttach", {
 			vim.lsp.buf.definition()
 		end, opts)
 		vim.keymap.set("n", "K", function()
-			vim.lsp.buf.hover({ border = "rounded" })
-		end, { desc = "Hover documentation", silent = true, buffer = e.buf })
+			vim.lsp.buf.hover({ border = "rounded", max_width = 90 })
+		end, opts)
 		vim.keymap.set("n", "<leader>ws", function()
 			vim.lsp.buf.workspace_symbol()
 		end, opts)
