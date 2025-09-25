@@ -140,7 +140,9 @@ return {
 
 			local cmp_select = { behavior = cmp.SelectBehavior.Select }
 			local luasnip = require("luasnip")
-
+			local ELLIPSIS_CHAR = "…"
+			local MAX_LABEL_WIDTH = 35
+			local MIN_LABEL_WIDTH = 15
 			cmp.setup({
 				snippet = {
 					expand = function(args)
@@ -206,26 +208,37 @@ return {
 					format = function(entry, vim_item)
 						vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
 						vim_item.menu = ({
-							nvim_lsp = "[LSP]",
-							luasnip = "[Snippet]",
-							buffer = "[Buffer]",
-							path = "[Path]",
+							nvim_lsp = "[L]",
+							luasnip = "[S]",
+							buffer = "[B]",
+							path = "[P]",
 						})[entry.source.name]
+						local label = vim_item.abbr
+						local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
+						if truncated_label ~= label then
+							vim_item.abbr = truncated_label .. ELLIPSIS_CHAR
+						elseif string.len(label) < MIN_LABEL_WIDTH then
+							local padding = string.rep(" ", MIN_LABEL_WIDTH - string.len(label))
+							vim_item.abbr = label .. padding
+						end
 						return vim_item
 					end,
 				},
 			})
 
 			vim.diagnostic.config({
-				-- update_in_insert = true,
-				float = {
-					focusable = true,
-					style = "minimal",
-					border = "rounded",
-					source = "always",
-					header = "",
-					prefix = "",
+				virtual_text = {
+					spacing = 2,
+					prefix = "●",
 				},
+				float = {
+					border = "rounded",
+					source = "if_many",
+					header = "Diagnostics",
+					focusable = true,
+				},
+				update_in_insert = false,
+				severity_sort = true,
 			})
 		end,
 	},
