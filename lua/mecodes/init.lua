@@ -3,6 +3,7 @@ require("mecodes.remap")
 require("mecodes.lazy_init")
 require("mecodes.transparency")
 require("mecodes.icons")
+require("mecodes.constants")
 
 local augroup = vim.api.nvim_create_augroup
 local MecodesGroup = augroup("mecodes", {})

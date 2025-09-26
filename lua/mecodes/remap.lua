@@ -44,7 +44,7 @@ vim.keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", opts)
 
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
--- -- format
+-- format
 -- vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 -- close
