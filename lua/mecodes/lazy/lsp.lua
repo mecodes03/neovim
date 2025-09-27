@@ -201,10 +201,10 @@ return {
 			})
 
 			vim.diagnostic.config({
-				virtual_text = {
-					spacing = 2,
-					prefix = "●",
-				},
+				-- virtual_text = {
+				-- 	spacing = 2,
+				-- 	prefix = "●",
+				-- },
 				float = {
 					border = "rounded",
 					source = "if_many",
