@@ -11,6 +11,8 @@ local MecodesGroup = augroup("mecodes", {})
 local autocmd = vim.api.nvim_create_autocmd
 local yank_group = augroup("HighlightYank", {})
 
+local cd_to_arg_dir_group = augroup("cd-to-pwd", { clear = true })
+
 function R(name)
 	require("plenary.reload").reload_module(name)
 end
@@ -36,6 +38,20 @@ autocmd({ "BufWritePre" }, {
 	group = MecodesGroup,
 	pattern = "*",
 	command = [[%s/\s\+$//e]],
+})
+
+autocmd("VimEnter", {
+	group = cd_to_arg_dir_group,
+	callback = function()
+		if vim.fn.argc() > 0 then
+			local file = vim.fn.argv(0)
+			if file ~= "" then
+				local dir = vim.fn.fnamemodify(file, ":p:h")
+				vim.cmd("cd " .. dir)
+			end
+		end
+	end,
+	desc = "cd to passed $PWD when vim starts.",
 })
 
 autocmd("LspAttach", {
