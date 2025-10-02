@@ -9,9 +9,10 @@ local augroup = vim.api.nvim_create_augroup
 local MecodesGroup = augroup("mecodes", {})
 
 local autocmd = vim.api.nvim_create_autocmd
-local yank_group = augroup("HighlightYank", {})
 
+local yank_group = augroup("HighlightYank", {})
 local cd_to_arg_dir_group = augroup("cd-to-pwd", { clear = true })
+local buf_enter_group = augroup("buf_enter", { clear = true })
 
 function R(name)
 	require("plenary.reload").reload_module(name)
@@ -38,6 +39,13 @@ autocmd({ "BufWritePre" }, {
 	group = MecodesGroup,
 	pattern = "*",
 	command = [[%s/\s\+$//e]],
+})
+
+autocmd("BufEnter", {
+	group = buf_enter_group,
+	callback = function()
+		-- TODO: on entering buffer, check dir.. if it is a subdirectory of the project dir.. then do nothing, if it is a parent dir of project dir, make that one the project dir, always keep record of original project dir.. so incase we come back to it or come one level closer to it, we'll make that one the project dir. ( I dont' know how we can do this tho:) )
+	end
 })
 
 autocmd("VimEnter", {
@@ -67,7 +75,7 @@ autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>ws", function()
 			vim.lsp.buf.workspace_symbol()
 		end, opts)
-		vim.keymap.set("n", "<leader>dd", function()
+		vim.keymap.set("n", "<leader>d", function()
 			vim.diagnostic.open_float()
 		end, opts)
 		vim.keymap.set("n", "<leader>ca", function()
@@ -82,10 +90,10 @@ autocmd("LspAttach", {
 		vim.keymap.set("i", "<C-h>", function()
 			vim.lsp.buf.signature_help()
 		end, opts)
-		vim.keymap.set("n", "<leader>dn", function()
+		vim.keymap.set("n", "<leader>en", function()
 			vim.diagnostic.goto_next()
 		end, opts)
-		vim.keymap.set("n", "<leader>dp", function()
+		vim.keymap.set("n", "<leader>ep", function()
 			vim.diagnostic.goto_prev()
 		end, opts)
 	end,
