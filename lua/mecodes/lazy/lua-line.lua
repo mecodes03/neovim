@@ -15,6 +15,9 @@ return {
 					{ "diff" },
 				},
 				lualine_c = {
+					"diagnostics"
+				},
+				lualine_x = {
 					{
 						"filename",
 						path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
@@ -30,7 +33,6 @@ return {
 						end,
 					},
 				},
-				lualine_x = { "diagnostics", "encoding", "fileformat", "filetype" },
 				lualine_y = { "progress" },
 				lualine_z = { "location" },
 			},

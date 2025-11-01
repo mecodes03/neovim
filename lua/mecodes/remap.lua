@@ -47,8 +47,8 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- format
 -- vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
--- close
-vim.keymap.set("i", "<C-c>", "<Esc>")
+-- back to normal mode
+vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true })
 
 -- rename current word
 vim.keymap.set("n", "<leader>rr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
