@@ -29,12 +29,20 @@ return {
 			css = JS_FORMATTERS,
 			scss = JS_FORMATTERS,
 			html = JS_FORMATTERS,
+
+			prisma = { "prisma_fmt" }
 		},
 
 		formatters = {
 			forge_fmt = {
 				command = "forge",
 				args = { "fmt", "--raw", "$filename" },
+				stdin = false,
+			},
+
+			prisma_fmt = {
+				command = "bunx ",
+				args = { "prisma", "format" },
 				stdin = false,
 			},
 

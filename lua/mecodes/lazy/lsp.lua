@@ -38,6 +38,7 @@ return {
 					"html",
 					"tailwindcss",
 					"dockerls",
+					"prismals"
 					-- haven't added solidity, but we have installed using Mason
 				},
 
