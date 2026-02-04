@@ -13,6 +13,7 @@ return {
 			-- javascript = { "eslint_d" },
 			-- typescript = { "eslint_d" },
 			solidity = { "solhint" },
+			python = { "flake8" }
 		}
 	end,
 }
