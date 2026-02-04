@@ -21,6 +21,7 @@ return {
 			local cmp_lsp = require("cmp_nvim_lsp")
 
 			local capabilities = vim.tbl_deep_extend(
+
 				"force",
 				{},
 				vim.lsp.protocol.make_client_capabilities(),
@@ -38,7 +39,8 @@ return {
 					"html",
 					"tailwindcss",
 					"dockerls",
-					"prismals"
+					"prismals",
+					"pyright"
 					-- haven't added solidity, but we have installed using Mason
 				},
 
@@ -125,8 +127,8 @@ return {
 					end,
 				},
 				window = {
-					documentation = cmp.config.window.bordered(),
-					completion = cmp.config.window.bordered(),
+					-- documentation = cmp.config.window.bordered(),
+					-- completion = cmp.config.window.bordered(),
 				},
 				mapping = cmp.mapping.preset.insert({
 					-- Scroll the documentation window [b]ack / [f]orward
@@ -206,14 +208,28 @@ return {
 				-- 	spacing = 2,
 				-- 	prefix = "●",
 				-- },
+				virtual_text = true,
+				underline = true,
+				update_in_insert = false,
+				severity_sort = true,
 				float = {
 					border = "rounded",
 					source = "if_many",
-					header = "Diagnostics",
+					header = "",
 					focusable = true,
 				},
-				update_in_insert = false,
-				severity_sort = true,
+				signs = {
+					text = {
+						[vim.diagnostic.severity.ERROR] = "󰅚 ",
+						[vim.diagnostic.severity.WARN] = "󰀪 ",
+						[vim.diagnostic.severity.INFO] = "󰋽 ",
+						[vim.diagnostic.severity.HINT] = "󰌶 ",
+					},
+					numhl = {
+						[vim.diagnostic.severity.ERROR] = "ErrorMsg",
+						[vim.diagnostic.severity.WARN] = "WarningMsg",
+					},
+				},
 			})
 		end,
 	},

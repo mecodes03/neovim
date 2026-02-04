@@ -1,46 +1,61 @@
 vim.g.mapleader = " "
 -- open explorer
-vim.keymap.set("n", "<leader>n", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>n", vim.cmd.Ex, { desc = "Open netrw explorer" })
 
 -- move lines (select visualy and then move up and down)
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
 -- delete line space or something like than and yet have cursor in start
-
-vim.keymap.set("n", "J", "mzJ`z")
+vim.keymap.set("n", "J", "mzJ`z", { desc = "Join lines, keep cursor position" })
 
 -- up and down
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-f>", "<C-u>zz")
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
+vim.keymap.set("n", "<C-f>", "<C-u>zz", { desc = "Scroll up and center" })
 
 -- find and center (corsor stays in center)
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
+vim.keymap.set("n", "n", "nzzzv", { desc = "Next search result centered" })
+vim.keymap.set("n", "N", "Nzzzv", { desc = "Prev search result centered" })
 
 -- paste and still have the copied into clipboard
-vim.keymap.set("x", "<leader>p", [["_dP]])
+vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste without yanking" })
 
 -- copy into sys clipboard
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to system clipboard" })
+vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Yank line to system clipboard" })
 
 local opts = { noremap = true, silent = true }
 
 -- save file
-vim.keymap.set("n", "<C-s>", "<cmd> w <CR>", opts)
+vim.keymap.set("n", "<C-s>", "<cmd> w <CR>", { noremap = true, silent = true, desc = "Save file" })
 
 -- quit file
-vim.keymap.set("n", "<C-x>", "<cmd> q <CR>", opts)
+vim.keymap.set("n", "<C-x>", "<cmd> q <CR>", { noremap = true, silent = true, desc = "Quit file" })
 
 -- delete buffer
-vim.keymap.set("n", "<leader>x", "<cmd>bdelete<CR>", { silent = true })
+vim.keymap.set("n", "<leader>x", "<cmd>bdelete<CR>", { silent = true, desc = "Delete buffer" })
 
 -- delete single character without copying into register
-vim.keymap.set("n", "x", '"_x', opts)
+vim.keymap.set("n", "x", '"_x', { noremap = true, silent = true, desc = "Delete char without yank" })
 
 -- Toggle line wrapping
-vim.keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", opts)
+vim.keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", { noremap = true, silent = true, desc = "Toggle line wrap" })
+
+-- Window navigation
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to left window" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to lower window" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to upper window" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right window" })
+
+-- Better indenting (stay in visual mode)
+vim.keymap.set("v", "<", "<gv", { desc = "Indent left and reselect" })
+vim.keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
+
+-- Select all
+vim.keymap.set("n", "<leader>sa", "ggVG", { desc = "Select all" })
+
+-- Duplicate line
+vim.keymap.set("n", "<leader>dd", "yyp", { desc = "Duplicate line below" })
 
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
@@ -51,10 +66,10 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true })
 
 -- rename current word
-vim.keymap.set("n", "<leader>rr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("n", "<leader>rr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Search/replace word under cursor" })
 
 -- make file executable
-vim.keymap.set("n", "<leader>X", "<cmd>!chmod +x %<CR>", { silent = true })
+vim.keymap.set("n", "<leader>X", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make file executable" })
 
 -- Resize with arrows
 vim.keymap.set("n", "<Up>", ":resize -1<CR>", opts)

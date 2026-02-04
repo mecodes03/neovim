@@ -71,7 +71,7 @@ return {
 				"<M-m>",
 				function()
 					local harpoon = require("harpoon")
-					harpoon:list():next({ ui_nav_wrap = true }) -- enable cycling through list
+					harpoon:list():prev({ ui_nav_wrap = true }) -- enable cycling through list
 				end,
 				desc = "harpoon to previous file",
 			},
