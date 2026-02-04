@@ -21,7 +21,7 @@ return {
 			go = { "gofmt" },
 			solidity = { "forge_fmt" },
 			nginx = { "nginxfmt" },
-
+			python = { "isort" },
 			javascript = JS_FORMATTERS,
 			typescript = JS_FORMATTERS,
 			javascriptreact = JS_FORMATTERS,
