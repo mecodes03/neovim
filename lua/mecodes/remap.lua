@@ -57,7 +57,7 @@ vim.keymap.set("n", "<leader>sa", "ggVG", { desc = "Select all" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
 -- format
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+-- vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 -- back to normal mode
 vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true })

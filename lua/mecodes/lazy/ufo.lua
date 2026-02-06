@@ -86,14 +86,14 @@ return {
     end,
     keys = {
         {
-            "zR",
+            "<leader>fo",
             function()
                 require("ufo").openAllFolds()
             end,
             desc = "Open all folds",
         },
         {
-            "zM",
+            "<leader>fc",
             function()
                 require("ufo").closeAllFolds()
             end,

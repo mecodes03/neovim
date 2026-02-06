@@ -9,15 +9,9 @@ return {
 				component_separators = "",
 			},
 			sections = {
-				lualine_a = { "mode" },
+				lualine_a = {
+				},
 				lualine_b = {
-					{ "branch" },
-					{ "diff" },
-				},
-				lualine_c = {
-					"diagnostics"
-				},
-				lualine_x = {
 					{
 						"filename",
 						path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
@@ -33,8 +27,15 @@ return {
 						end,
 					},
 				},
-				lualine_y = { "progress" },
-				lualine_z = { "location" },
+				lualine_c = {
+					"diagnostics"
+				},
+				lualine_x = {
+					{ "diff" },
+					{ "branch" },
+				},
+				lualine_y = {},
+				lualine_z = {},
 			},
 		})
 	end,
