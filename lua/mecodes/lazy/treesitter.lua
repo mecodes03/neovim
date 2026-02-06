@@ -6,6 +6,8 @@ return {
 			-- A list of parser names, or "all"
 			ensure_installed = {
 				"vimdoc",
+				"markdown",
+				"markdown_inline",
 				"javascript",
 				"typescript",
 				"c",

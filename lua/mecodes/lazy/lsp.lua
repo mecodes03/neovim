@@ -208,15 +208,15 @@ return {
 				-- 	spacing = 2,
 				-- 	prefix = "●",
 				-- },
-				virtual_text = true,
+				-- virtual_text = true,
 				underline = true,
 				update_in_insert = false,
 				severity_sort = true,
 				float = {
 					border = "rounded",
-					source = "if_many",
-					header = "",
 					focusable = true,
+					header = "",
+					source = "if_many",
 				},
 				signs = {
 					text = {

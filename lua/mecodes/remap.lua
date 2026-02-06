@@ -54,19 +54,17 @@ vim.keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
 -- Select all
 vim.keymap.set("n", "<leader>sa", "ggVG", { desc = "Select all" })
 
--- Duplicate line
-vim.keymap.set("n", "<leader>dd", "yyp", { desc = "Duplicate line below" })
-
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
 -- format
--- vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 -- back to normal mode
 vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true })
 
 -- rename current word
-vim.keymap.set("n", "<leader>rr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Search/replace word under cursor" })
+vim.keymap.set("n", "<leader>rr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+	{ desc = "Search/replace word under cursor" })
 
 -- make file executable
 vim.keymap.set("n", "<leader>X", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make file executable" })
