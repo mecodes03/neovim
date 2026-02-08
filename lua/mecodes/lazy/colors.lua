@@ -7,9 +7,22 @@ function ColorMyPencils(color)
 	vim.cmd.colorscheme(color)
 
 	if transparency.IS_FORCING_TRANSPARENCY then
+		MakeTransparence()
+	end
+end
+
+function ToggleTransparency()
+	if transparency.IS_FORCING_TRANSPARENCY then
 		vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+	else
+		ColorMyPencils("rose-pine")
 	end
+end
+
+function MakeTransparence()
+	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 end
 
 return {
@@ -89,6 +102,14 @@ return {
 				variant = "moon",
 				dark_variant = "moon",
 				dim_inactive_windows = true,
+				palette = {
+					moon = {
+						base = "#15131f",
+						_nc = "#131120",
+						surface = "#222038",
+						overlay = "#2e2b45",
+					},
+				},
 				styles = {
 					bold = false,
 					italic = false,
