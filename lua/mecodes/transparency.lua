@@ -1,7 +1,7 @@
 -- Force transparent backgrounds
 return {
 	-- used in theme config
-	IS_FORCING_TRANSPARENCY = true,
+	IS_FORCING_TRANSPARENCY = false,
 	force_transparency = function()
 		local groups = {
 			"EndOfBuffer",
