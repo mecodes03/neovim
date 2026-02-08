@@ -6,11 +6,11 @@ require("mecodes.icons")
 require("mecodes.constants")
 
 local augroup = vim.api.nvim_create_augroup
-local MecodesGroup = augroup("mecodes", {})
+local MecodesGroup = augroup("mecodes", { clear = true })
 
 local autocmd = vim.api.nvim_create_autocmd
 
-local yank_group = augroup("HighlightYank", {})
+local yank_group = augroup("HighlightYank", { clear = true })
 local cd_to_arg_dir_group = augroup("cd-to-pwd", { clear = true })
 local buf_enter_group = augroup("buf_enter", { clear = true })
 
@@ -55,7 +55,7 @@ autocmd("VimEnter", {
             local file = vim.fn.argv(0)
             if file ~= "" then
                 local dir = vim.fn.fnamemodify(file, ":p:h")
-                vim.cmd("cd " .. dir)
+                vim.fn.chdir(dir)
             end
         end
     end,
@@ -131,7 +131,3 @@ autocmd("LspAttach", {
         end
     end,
 })
-
-vim.g.netrw_browse_split = 0
-vim.g.netrw_banner = 0
-vim.g.netrw_winsize = 25
