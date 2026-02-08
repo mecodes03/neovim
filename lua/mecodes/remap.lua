@@ -11,7 +11,7 @@ vim.keymap.set("n", "J", "mzJ`z", { desc = "Join lines, keep cursor position" })
 
 -- up and down
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
-vim.keymap.set("n", "<C-f>", "<C-u>zz", { desc = "Scroll up and center" })
+vim.keymap.set({ "n", "v" }, "<C-f>", "<C-u>zz", { desc = "Scroll up and center" })
 
 -- find and center (corsor stays in center)
 vim.keymap.set("n", "n", "nzzzv", { desc = "Next search result centered" })
