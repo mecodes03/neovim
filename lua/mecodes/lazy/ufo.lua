@@ -64,12 +64,12 @@ return {
 
         opts.preview = {
             win_config = {
-                border = "rounded",
+                border = "none",
                 winhighlight = "Normal:Folded",
                 winblend = 0,
             },
             mappings = {
-                scrollU = "<C-u>",
+                scrollU = "<C-f>",
                 scrollD = "<C-d>",
                 jumpTop = "[",
                 jumpBot = "]",
