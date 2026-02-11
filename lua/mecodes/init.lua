@@ -85,7 +85,7 @@ autocmd("LspAttach", {
             vim.lsp.buf.workspace_symbol()
         end, opts)
         vim.keymap.set("n", "<leader>d", function()
-            vim.diagnostic.open_float()
+            vim.diagnostic.open_float({ max_height = 25, max_width = 90 })
         end, opts)
         vim.keymap.set("n", "<leader>ca", function()
             vim.lsp.buf.code_action()
