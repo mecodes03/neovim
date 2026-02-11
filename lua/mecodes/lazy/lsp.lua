@@ -20,13 +20,15 @@ return {
 			local cmp = require("cmp")
 			local cmp_lsp = require("cmp_nvim_lsp")
 
-			local capabilities = vim.tbl_deep_extend(
-
-				"force",
-				{},
-				vim.lsp.protocol.make_client_capabilities(),
-				cmp_lsp.default_capabilities()
-			)
+			-- Apply cmp capabilities to ALL LSP servers via the '*' wildcard
+			vim.lsp.config("*", {
+				capabilities = vim.tbl_deep_extend(
+					"force",
+					{},
+					vim.lsp.protocol.make_client_capabilities(),
+					cmp_lsp.default_capabilities()
+				),
+			})
 
 			require("fidget").setup({})
 			require("mason").setup()
@@ -40,77 +42,11 @@ return {
 					"tailwindcss",
 					"dockerls",
 					"prismals",
-					"pyright"
+					"pyright",
 					-- haven't added solidity, but we have installed using Mason
 				},
-
-				handlers = {
-					function(server_name) -- default handler (optional)
-						require("lspconfig")[server_name].setup({
-							capabilities = capabilities,
-						})
-					end,
-
-					["lua_ls"] = function()
-						local lspconfig = require("lspconfig")
-						lspconfig.lua_ls.setup({
-							capabilities = capabilities,
-							settings = {
-								Lua = {
-									diagnostics = {
-										globals = { "vim", "it", "describe", "before_each", "after_each" },
-									},
-								},
-							},
-						})
-					end,
-
-					-- ["ts_ls"] = function()
-					-- 	local lspconfig = require("lspconfig")
-					-- 	local util = require("lspconfig.util")
-					-- 	lspconfig.ts_ls.setup({
-					-- 		capabilities = capabilities,
-					-- 		root_dir = util.root_pattern(".git"), -- You can adjust as needed
-					-- 	})
-					-- end,
-
-					["solidity_ls_nomicfoundation"] = function()
-						local lspconfig = require("lspconfig")
-						local util = require("lspconfig.util")
-						lspconfig.solidity_ls_nomicfoundation.setup({
-							capabilities = capabilities,
-							-- on_attach =
-							root_dir = util.root_pattern("foundry.toml", ".git", "hardhat.config.js"), -- You can adjust as needed
-						})
-					end,
-					--
-					-- ["solidity_ls"] = function()
-					-- 	local lspconfig = require("lspconfig")
-					-- 	lspconfig.solidity_ls.setup({
-					-- 		cmd = { "vscode-solidity-server", "--stdio" },
-					-- 		filetypes = { "solidity" },
-					-- 		root_dir = lspconfig.util.root_pattern("hardhat.config.js", "foundry.toml", ".git"),
-					-- 		settings = {
-					-- 			solidity = {
-					-- 				compileUsingRemoteVersion = "latest",
-					-- 				defaultCompiler = "remote",
-					-- 				enabledAsYouTypeCompilationErrorCheck = true,
-					-- 				packageDefaultDependenciesContractsDirectory = "src",
-					-- 				packageDefaultDependenciesDirectory = "lib",
-					-- 			},
-					-- 		},
-					-- 	})
-					-- end,
-
-					-- commenting out cos I think the default function will take care of it
-					-- ["html"] = function()
-					-- 	local lspconfig = require("lspconfig")
-					-- 	lspconfig.html.setup({
-					-- 		capabilities = capabilities,
-					-- 		filetypes = { "html", "tsx", "jsx" },
-					-- 	})
-					-- end,
-				},
+				-- automatic_enable = true (default) will call vim.lsp.config + vim.lsp.enable
+				-- Server overrides live in after/lsp/<server>.lua (highest priority in Neovim's merge chain)
 			})
 
 			local kind_icons = require("mecodes.icons").kind
@@ -234,19 +170,37 @@ return {
 		end,
 	},
 	-- I think we can move the below stuff into our handlers above, just like we have done for lua_ls
-	{
-		"pmizio/typescript-tools.nvim",
-		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-		config = function()
-			local api = require("typescript-tools.api")
-			require("typescript-tools").setup({
-				handlers = {
-					["textDocument/publishDiagnostics"] = api.filter_diagnostics(
-					-- Ignore 'This may be converted to an async function' diagnostics.
-						{ 80006 }
-					),
-				},
-			})
-		end,
-	},
+	-- {
+	-- 	"pmizio/typescript-tools.nvim",
+	-- 	dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+	-- 	config = function()
+	-- 		local api = require("typescript-tools.api")
+	-- 		local ts_util = require("typescript-tools.utils")
+	--
+	-- 		require("typescript-tools").setup({
+	-- 			-- Override root_dir to prefer monorepo root so only ONE instance spawns in a turborepo
+	-- 			-- Signature: function(bufnr, on_dir) — this is vim.lsp.config style, NOT lspconfig style
+	-- 			root_dir = function(bufnr, on_dir)
+	-- 				local fname = vim.api.nvim_buf_get_name(bufnr)
+	-- 				-- Lockfiles only exist at workspace root, never in sub-packages
+	-- 				local monorepo_root = ts_util.search_ancestors(fname, function(path)
+	-- 					return vim.fn.filereadable(vim.fn.join({ path, "pnpm-lock.yaml" }, "/")) == 1
+	-- 						or vim.fn.filereadable(vim.fn.join({ path, "pnpm-workspace.yaml" }, "/")) == 1
+	-- 						or vim.fn.filereadable(vim.fn.join({ path, "yarn.lock" }, "/")) == 1
+	-- 						or vim.fn.filereadable(vim.fn.join({ path, "bun.lockb" }, "/")) == 1
+	-- 						or vim.fn.filereadable(vim.fn.join({ path, "bun.lock" }, "/")) == 1
+	-- 						or vim.fn.filereadable(vim.fn.join({ path, "package-lock.json" }, "/")) == 1
+	-- 				end)
+	--
+	-- 				on_dir(monorepo_root or ts_util.get_root_dir(bufnr))
+	-- 			end,
+	-- 			handlers = {
+	-- 				["textDocument/publishDiagnostics"] = api.filter_diagnostics(
+	-- 				-- Ignore 'This may be converted to an async function' diagnostics.
+	-- 					{ 80006 }
+	-- 				),
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 }
