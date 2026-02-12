@@ -149,7 +149,7 @@ return {
 				update_in_insert = false,
 				severity_sort = true,
 				float = {
-					border = "none",
+					border = "rounded",
 					focusable = true,
 					header = "",
 					source = "if_many",

@@ -75,7 +75,7 @@ return {
 			if bufname:match("/node_modules/") then
 				return
 			end
-			return { timeout_ms = 500, lsp_fallback = true }
+			return { timeout_ms = 500, lsp_format = "fallback" }
 		end,
 	},
 
@@ -84,7 +84,7 @@ return {
 
 		-- Keymap: format buffer or selection
 		vim.keymap.set({ "n", "v" }, "<leader>cf", function()
-			require("conform").format({ async = true, lsp_fallback = true })
+			require("conform").format({ async = true, lsp_format = "fallback" })
 			print("Formatting Successful")
 		end, { desc = "Format with conform.nvim" })
 	end,

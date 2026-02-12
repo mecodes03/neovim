@@ -28,7 +28,7 @@ autocmd("TextYankPost", {
     group = yank_group,
     pattern = "*",
     callback = function()
-        vim.highlight.on_yank({
+        vim.hl.on_yank({
             higroup = "IncSearch",
             timeout = 80,
         })
@@ -99,11 +99,11 @@ autocmd("LspAttach", {
         vim.keymap.set("i", "<C-h>", function()
             vim.lsp.buf.signature_help()
         end, opts)
-        vim.keymap.set("n", "<leader>en", function()
-            vim.diagnostic.goto_next()
+        vim.keymap.set("n", "<leader>[d", function()
+            vim.diagnostic.jump({ count = 1 })
         end, opts)
-        vim.keymap.set("n", "<leader>ep", function()
-            vim.diagnostic.goto_prev()
+        vim.keymap.set("n", "<leader>]d", function()
+            vim.diagnostic.jump({ count = -1 })
         end, opts)
         vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<cr>", opts)
         vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>", opts)
@@ -112,7 +112,7 @@ autocmd("LspAttach", {
         end, opts)
 
 
-        local client = vim.lsp.get_client_by_id(e.data.client_id)
+        local client = vim.lsp.get_clients({ id = e.data.client_id })[1]
         if not client then return end
 
         -- Document highlight on cursor hold

@@ -12,7 +12,7 @@ function ColorMyPencils(color)
 end
 
 function ToggleTransparency()
-	if transparency.IS_FORCING_TRANSPARENCY then
+	if not transparency.IS_FORCING_TRANSPARENCY then
 		vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 	else
@@ -70,29 +70,29 @@ return {
 		end,
 	},
 
-	-- {
-	-- 	"Rolv-Apneseth/onedark.nvim", -- colourscheme
-	-- 	name = "onedark",
-	-- 	--[[ dev = true, ]]
-	-- 	config = function()
-	-- 		-- local onedark = require("onedark")
-	-- 		-- if not onedark then
-	-- 		-- 	return
-	-- 		-- end
-	--
-	-- 		require("onedark").setup({
-	-- 			style = "darker",
-	-- 			transparent = transparency.IS_FORCING_TRANSPARENCY,
-	-- 			diagnostics = {
-	-- 				background = not transparency.IS_FORCING_TRANSPARENCY,
-	-- 			},
-	-- 		})
-	--
-	-- 		if transparency.IS_FORCING_TRANSPARENCY then
-	-- 			transparency.force_transparency()
-	-- 		end
-	-- 	end,
-	-- },
+	{
+		"Rolv-Apneseth/onedark.nvim", -- colourscheme
+		name = "onedark",
+		--[[ dev = true, ]]
+		config = function()
+			-- local onedark = require("onedark")
+			-- if not onedark then
+			-- 	return
+			-- end
+
+			require("onedark").setup({
+				style = "darker",
+				transparent = transparency.IS_FORCING_TRANSPARENCY,
+				diagnostics = {
+					background = not transparency.IS_FORCING_TRANSPARENCY,
+				},
+			})
+
+			if transparency.IS_FORCING_TRANSPARENCY then
+				transparency.force_transparency()
+			end
+		end,
+	},
 
 	{
 		"rose-pine/neovim",

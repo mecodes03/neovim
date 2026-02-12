@@ -41,12 +41,6 @@ vim.keymap.set("n", "x", '"_x', { noremap = true, silent = true, desc = "Delete 
 -- Toggle line wrapping
 vim.keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", { noremap = true, silent = true, desc = "Toggle line wrap" })
 
--- Window navigation
-vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to left window" })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to lower window" })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to upper window" })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right window" })
-
 -- Better indenting (stay in visual mode)
 vim.keymap.set("v", "<", "<gv", { desc = "Indent left and reselect" })
 vim.keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
