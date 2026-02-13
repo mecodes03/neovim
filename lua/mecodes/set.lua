@@ -11,7 +11,9 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.o.smartcase = true
 
--- vim.opt.cursorline = true
+vim.opt.cursorline = true
+vim.opt.cursorlineopt = "number"
+vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#e5e510", bold = true })
 
 -- grep case-insensitive
 vim.opt.grepprg = "rg --vimgrep --smart-case"
