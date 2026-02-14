@@ -35,10 +35,10 @@ local options = {
 	inccommand = "split",                        -- live preview of :s/ substitutions in a split
 	fillchars = "eob: ",                         -- hide ~ at end of buffer
 	timeoutlen = 400,                            -- ms to wait for mapped key sequence to complete
-	-- showtabline = 2,                             -- always show the tab line
-	spell = true,                                -- enable spellcheck
 	spelllang = "en",                            -- spellcheck language
 	numberwidth = 4,                             -- number column width
+	-- showtabline = 2,                             -- always show the tab line
+	-- spell = true,                                -- enable spellcheck
 }
 
 -- Apply options
