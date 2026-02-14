@@ -12,12 +12,13 @@ function ColorMyPencils(color)
 end
 
 function ToggleTransparency()
-	if not transparency.IS_FORCING_TRANSPARENCY then
-		vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+	if transparency.IS_FORCING_TRANSPARENCY then
+		transparency.IS_FORCING_TRANSPARENCY = false
 	else
-		ColorMyPencils("rose-pine")
+		transparency.IS_FORCING_TRANSPARENCY = true
 	end
+
+	ColorMyPencils("rose-pine")
 end
 
 function MakeTransparence()
