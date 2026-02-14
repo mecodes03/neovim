@@ -1,6 +1,6 @@
 vim.g.mapleader = " "
 -- open explorer
-vim.keymap.set("n", "<leader>n", vim.cmd.Ex, { desc = "Open netrw explorer" })
+vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc = "Open netrw explorer" })
 
 -- move lines (select visualy and then move up and down)
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
