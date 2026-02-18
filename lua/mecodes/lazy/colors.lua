@@ -71,7 +71,7 @@ return {
 		config = function()
 			require("tokyonight").setup({
 				style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
-				transparent = transparency, -- Enable this to disable setting the background color
+				-- transparent = transparency, -- Enable this to disable setting the background color
 				terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
 				styles = {
 					-- Style to be applied to different syntax groups
@@ -83,7 +83,7 @@ return {
 					floats = "dark", -- style for floating windows
 				},
 			})
-			if color_scheme == 'tokyonight' then
+			if color_scheme == "tokyonight" then
 				ColorMyPencils("tokyonight")
 			end
 		end,
@@ -95,7 +95,7 @@ return {
 		priority = 1000,
 		config = function()
 			require("catppuccin").setup({
-				transparent_background = transparency,
+				-- transparent_background = transparency,
 				term_colors = true,
 				no_italic = true,
 				no_bold = true,
@@ -130,7 +130,7 @@ return {
 				styles = {
 					bold = false,
 					italic = false,
-					-- transparency = transparency.Transparency, -- this is making everything transparent
+					-- transparency = transparency, -- this is making everything transparent
 				},
 				enable = { terminal = true },
 			})
