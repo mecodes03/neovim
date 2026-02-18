@@ -43,77 +43,69 @@ return {
                     "prismals"
                     -- haven't added solidity, but we have installed using Mason
                 },
+            })
 
-                handlers = {
-                    function(server_name) -- default handler (optional)
-                        require("lspconfig")[server_name].setup({
-                            capabilities = capabilities,
-                        })
-                    end,
+            -- vim.lsp.config() is what automatic_enable uses (Neovim 0.11+)
+            vim.lsp.config("*", {
+                capabilities = capabilities,
+            })
 
-                    -- jdtls is handled separately by mecodes/jdtls.lua via FileType autocmd
-                    ["jdtls"] = function() end,
-
-                    ["lua_ls"] = function()
-                        local lspconfig = require("lspconfig")
-                        lspconfig.lua_ls.setup({
-                            capabilities = capabilities,
-                            settings = {
-                                Lua = {
-                                    diagnostics = {
-                                        globals = { "vim", "it", "describe", "before_each", "after_each" },
-                                    },
-                                },
-                            },
-                        })
-                    end,
-
-                    -- ["ts_ls"] = function()
-                    -- 	local lspconfig = require("lspconfig")
-                    -- 	local util = require("lspconfig.util")
-                    -- 	lspconfig.ts_ls.setup({
-                    -- 		capabilities = capabilities,
-                    -- 		root_dir = util.root_pattern(".git"), -- You can adjust as needed
-                    -- 	})
-                    -- end,
-
-                    ["solidity_ls_nomicfoundation"] = function()
-                        local lspconfig = require("lspconfig")
-                        local util = require("lspconfig.util")
-                        lspconfig.solidity_ls_nomicfoundation.setup({
-                            capabilities = capabilities,
-                            -- on_attach =
-                            root_dir = util.root_pattern("foundry.toml", ".git", "hardhat.config.js"), -- You can adjust as needed
-                        })
-                    end,
-                    --
-                    -- ["solidity_ls"] = function()
-                    -- 	local lspconfig = require("lspconfig")
-                    -- 	lspconfig.solidity_ls.setup({
-                    -- 		cmd = { "vscode-solidity-server", "--stdio" },
-                    -- 		filetypes = { "solidity" },
-                    -- 		root_dir = lspconfig.util.root_pattern("hardhat.config.js", "foundry.toml", ".git"),
-                    -- 		settings = {
-                    -- 			solidity = {
-                    -- 				compileUsingRemoteVersion = "latest",
-                    -- 				defaultCompiler = "remote",
-                    -- 				enabledAsYouTypeCompilationErrorCheck = true,
-                    -- 				packageDefaultDependenciesContractsDirectory = "src",
-                    -- 				packageDefaultDependenciesDirectory = "lib",
-                    -- 			},
-                    -- 		},
-                    -- 	})
-                    -- end,
-
-                    -- commenting out cos I think the default function will take care of it
-                    -- ["html"] = function()
-                    -- 	local lspconfig = require("lspconfig")
-                    -- 	lspconfig.html.setup({
-                    -- 		capabilities = capabilities,
-                    -- 		filetypes = { "html", "tsx", "jsx" },
-                    -- 	})
-                    -- end,
+            vim.lsp.config("lua_ls", {
+                settings = {
+                    Lua = {
+                        diagnostics = {
+                            globals = { "vim", "it", "describe", "before_each", "after_each" },
+                        },
+                    },
                 },
+            })
+
+            vim.lsp.config("tailwindcss", {
+                workspace_required = true,
+                filetypes = {
+                    "html",
+                    "css",
+                    "scss",
+                    "javascriptreact",
+                    "typescriptreact",
+                },
+                root_dir = function(bufnr, on_dir)
+                    local fname = vim.api.nvim_buf_get_name(bufnr)
+                    -- Lockfiles only exist at the workspace root, never in sub-packages.
+                    -- This ensures a single LSP instance per monorepo.
+                    local lockfile = vim.fs.find({
+                        "pnpm-lock.yaml",
+                        "pnpm-workspace.yaml",
+                        "yarn.lock",
+                        "bun.lockb",
+                        "bun.lock",
+                        "package-lock.json",
+                    }, { path = fname, upward = true })[1]
+
+                    if lockfile then
+                        return on_dir(vim.fs.dirname(lockfile))
+                    end
+
+                    -- Fallback for non-monorepo projects
+                    local config_file = vim.fs.find({
+                        "tailwind.config.js",
+                        "tailwind.config.ts",
+                        "tailwind.config.mjs",
+                        "tailwind.config.cjs",
+                        "postcss.config.js",
+                        "postcss.config.mjs",
+                        "postcss.config.ts",
+                        "postcss.config.cjs",
+                    }, { path = fname, upward = true })[1]
+
+                    if config_file then
+                        return on_dir(vim.fs.dirname(config_file))
+                    end
+                end,
+            })
+
+            vim.lsp.config("solidity_ls_nomicfoundation", {
+                root_markers = { "foundry.toml", "hardhat.config.js", ".git" },
             })
 
             local kind_icons = require("mecodes.icons").kind
