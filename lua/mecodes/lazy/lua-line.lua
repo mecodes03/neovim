@@ -14,7 +14,7 @@ return {
 				lualine_b = {
 					{
 						"filename",
-						path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
+						path = 4, -- 0 = just filename, 1 = relative path, 2 = absolute path
 						file_status = true,
 						newfile_status = true,
 						symbols = {
