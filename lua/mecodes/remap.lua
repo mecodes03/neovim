@@ -116,3 +116,6 @@ vim.keymap.set("n", "<leader>tm", function()
 		print("Mouse Disable")
 	end
 end, { desc = "Toggle Mouse" })
+
+-- toggle Transparency
+vim.keymap.set("n", "<leader>tr", ":lua ToggleTransparency()<CR>", { desc = "Toggle Transparency" })
