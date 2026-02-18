@@ -1,195 +1,218 @@
 return {
-	{
-		"neovim/nvim-lspconfig",
-		dependencies = {
-			"williamboman/mason.nvim",
-			"williamboman/mason-lspconfig.nvim",
-			"j-hui/fidget.nvim",
+    {
+        "neovim/nvim-lspconfig",
+        dependencies = {
+            "williamboman/mason.nvim",
+            "williamboman/mason-lspconfig.nvim",
+            "j-hui/fidget.nvim",
 
-			-- for autocompletions
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-buffer",
-			"hrsh7th/cmp-path",
-			"hrsh7th/cmp-cmdline",
-			"hrsh7th/nvim-cmp",
-			"L3MON4D3/LuaSnip",
-			"saadparwaiz1/cmp_luasnip",
-		},
+            -- for autocompletions
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-cmdline",
+            "hrsh7th/nvim-cmp",
+            "L3MON4D3/LuaSnip",
+            "saadparwaiz1/cmp_luasnip",
+        },
 
-		config = function()
-			local cmp = require("cmp")
-			local cmp_lsp = require("cmp_nvim_lsp")
+        config = function()
+            local cmp = require("cmp")
+            local cmp_lsp = require("cmp_nvim_lsp")
 
-			-- Apply cmp capabilities to ALL LSP servers via the '*' wildcard
-			vim.lsp.config("*", {
-				capabilities = vim.tbl_deep_extend(
-					"force",
-					{},
-					vim.lsp.protocol.make_client_capabilities(),
-					cmp_lsp.default_capabilities()
-				),
-			})
+            local capabilities = vim.tbl_deep_extend(
+                "force",
+                {},
+                vim.lsp.protocol.make_client_capabilities(),
+                cmp_lsp.default_capabilities()
+            )
 
-            	-- jdtls is handled separately by mecodes/jdtls.lua via FileType autocmd
-            	automatic_enable = { exclude = { "jdtls" } },
-			require("mason-lspconfig").setup({
-				ensure_installed = {
-					"lua_ls",
-					"rust_analyzer",
-					-- "ts_ls", -- commenting this out so we can use some other faster ts lsp :)
-					"gopls",
-					"html",
-					"tailwindcss",
-					"dockerls",
-					"prismals",
-					"pyright",
-					-- haven't added solidity, but we have installed using Mason
-				},
-				-- automatic_enable = true (default) will call vim.lsp.config + vim.lsp.enable
-				-- Server overrides live in after/lsp/<server>.lua (highest priority in Neovim's merge chain)
-			})
+            require("fidget").setup({})
+            require("mason").setup()
+            require("mason-lspconfig").setup({
+                -- jdtls is handled separately by mecodes/jdtls.lua via FileType autocmd
+                automatic_enable = { exclude = { "jdtls" } },
+                ensure_installed = {
+                    "lua_ls",
+                    "rust_analyzer",
+                    -- "ts_ls", -- commenting this out so we can use some other faster ts lsp :)
+                    "gopls",
+                    "html",
+                    "tailwindcss",
+                    "dockerls",
+                    "prismals"
+                    -- haven't added solidity, but we have installed using Mason
+                },
 
-			local kind_icons = require("mecodes.icons").kind
+                handlers = {
+                    function(server_name) -- default handler (optional)
+                        require("lspconfig")[server_name].setup({
+                            capabilities = capabilities,
+                        })
+                    end,
 
-			local cmp_select = { behavior = cmp.SelectBehavior.Select }
-			local luasnip = require("luasnip")
-			local ELLIPSIS_CHAR = "…"
-			local MAX_LABEL_WIDTH = 35
-			local MIN_LABEL_WIDTH = 15
-			cmp.setup({
-				snippet = {
-					expand = function(args)
-						luasnip.lsp_expand(args.body) -- For `luasnip` users.
-					end,
-				},
-				window = {
-					-- documentation = cmp.config.window.bordered(),
-					-- completion = cmp.config.window.bordered(),
-				},
-				mapping = cmp.mapping.preset.insert({
-					-- Scroll the documentation window [b]ack / [f]orward
-					["<C-f>"] = cmp.mapping.scroll_docs(-8),
-					["<C-d>"] = cmp.mapping.scroll_docs(8),
+                    -- jdtls is handled separately by mecodes/jdtls.lua via FileType autocmd
+                    ["jdtls"] = function() end,
 
-					-- Accept ([y]es) the completion.
-					["<C-y>"] = cmp.mapping.confirm({ select = true }),
-					["<C-Space>"] = cmp.mapping.complete(),
+                    ["lua_ls"] = function()
+                        local lspconfig = require("lspconfig")
+                        lspconfig.lua_ls.setup({
+                            capabilities = capabilities,
+                            settings = {
+                                Lua = {
+                                    diagnostics = {
+                                        globals = { "vim", "it", "describe", "before_each", "after_each" },
+                                    },
+                                },
+                            },
+                        })
+                    end,
 
-					-- Select next/previous item with Tab / Shift + Tab
-					["<Tab>"] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_next_item(cmp_select)
-						elseif luasnip.expand_or_locally_jumpable() then
-							luasnip.expand_or_jump()
-						else
-							fallback()
-						end
-					end, { "i", "s" }),
-					["<S-Tab>"] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_prev_item(cmp_select)
-						elseif luasnip.locally_jumpable(-1) then
-							luasnip.jump(-1)
-						else
-							fallback()
-						end
-					end, { "i", "s" }),
-				}),
+                    -- ["ts_ls"] = function()
+                    -- 	local lspconfig = require("lspconfig")
+                    -- 	local util = require("lspconfig.util")
+                    -- 	lspconfig.ts_ls.setup({
+                    -- 		capabilities = capabilities,
+                    -- 		root_dir = util.root_pattern(".git"), -- You can adjust as needed
+                    -- 	})
+                    -- end,
 
-				sources = cmp.config.sources({
-					{ name = "nvim_lsp" },
-					{ name = "luasnip" }, -- For luasnip users.
-					{ name = "buffer" },
-					{ name = "path" },
-				}),
+                    ["solidity_ls_nomicfoundation"] = function()
+                        local lspconfig = require("lspconfig")
+                        local util = require("lspconfig.util")
+                        lspconfig.solidity_ls_nomicfoundation.setup({
+                            capabilities = capabilities,
+                            -- on_attach =
+                            root_dir = util.root_pattern("foundry.toml", ".git", "hardhat.config.js"), -- You can adjust as needed
+                        })
+                    end,
+                    --
+                    -- ["solidity_ls"] = function()
+                    -- 	local lspconfig = require("lspconfig")
+                    -- 	lspconfig.solidity_ls.setup({
+                    -- 		cmd = { "vscode-solidity-server", "--stdio" },
+                    -- 		filetypes = { "solidity" },
+                    -- 		root_dir = lspconfig.util.root_pattern("hardhat.config.js", "foundry.toml", ".git"),
+                    -- 		settings = {
+                    -- 			solidity = {
+                    -- 				compileUsingRemoteVersion = "latest",
+                    -- 				defaultCompiler = "remote",
+                    -- 				enabledAsYouTypeCompilationErrorCheck = true,
+                    -- 				packageDefaultDependenciesContractsDirectory = "src",
+                    -- 				packageDefaultDependenciesDirectory = "lib",
+                    -- 			},
+                    -- 		},
+                    -- 	})
+                    -- end,
 
-				formatting = {
-					fields = { "kind", "abbr", "menu" },
-					format = function(entry, vim_item)
-						vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-						vim_item.menu = ({
-							nvim_lsp = "[L]",
-							luasnip = "[S]",
-							buffer = "[B]",
-							path = "[P]",
-						})[entry.source.name]
-						local label = vim_item.abbr
-						local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
-						if truncated_label ~= label then
-							vim_item.abbr = truncated_label .. ELLIPSIS_CHAR
-						elseif string.len(label) < MIN_LABEL_WIDTH then
-							local padding = string.rep(" ", MIN_LABEL_WIDTH - string.len(label))
-							vim_item.abbr = label .. padding
-						end
-						return vim_item
-					end,
-				},
-			})
+                    -- commenting out cos I think the default function will take care of it
+                    -- ["html"] = function()
+                    -- 	local lspconfig = require("lspconfig")
+                    -- 	lspconfig.html.setup({
+                    -- 		capabilities = capabilities,
+                    -- 		filetypes = { "html", "tsx", "jsx" },
+                    -- 	})
+                    -- end,
+                },
+            })
 
-			vim.diagnostic.config({
-				-- virtual_text = {
-				-- 	spacing = 2,
-				-- 	prefix = "●",
-				-- },
-				-- virtual_text = true,
-				underline = true,
-				update_in_insert = false,
-				severity_sort = true,
-				float = {
-					border = "rounded",
-					focusable = true,
-					header = "",
-					source = "if_many",
-				},
-				signs = {
-					text = {
-						[vim.diagnostic.severity.ERROR] = "󰅚 ",
-						[vim.diagnostic.severity.WARN] = "󰀪 ",
-						[vim.diagnostic.severity.INFO] = "󰋽 ",
-						[vim.diagnostic.severity.HINT] = "󰌶 ",
-					},
-					numhl = {
-						[vim.diagnostic.severity.ERROR] = "ErrorMsg",
-						[vim.diagnostic.severity.WARN] = "WarningMsg",
-					},
-				},
-			})
-		end,
-	},
-	-- I think we can move the below stuff into our handlers above, just like we have done for lua_ls
-	-- {
-	-- 	"pmizio/typescript-tools.nvim",
-	-- 	dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-	-- 	config = function()
-	-- 		local api = require("typescript-tools.api")
-	-- 		local ts_util = require("typescript-tools.utils")
-	--
-	-- 		require("typescript-tools").setup({
-	-- 			-- Override root_dir to prefer monorepo root so only ONE instance spawns in a turborepo
-	-- 			-- Signature: function(bufnr, on_dir) — this is vim.lsp.config style, NOT lspconfig style
-	-- 			root_dir = function(bufnr, on_dir)
-	-- 				local fname = vim.api.nvim_buf_get_name(bufnr)
-	-- 				-- Lockfiles only exist at workspace root, never in sub-packages
-	-- 				local monorepo_root = ts_util.search_ancestors(fname, function(path)
-	-- 					return vim.fn.filereadable(vim.fn.join({ path, "pnpm-lock.yaml" }, "/")) == 1
-	-- 						or vim.fn.filereadable(vim.fn.join({ path, "pnpm-workspace.yaml" }, "/")) == 1
-	-- 						or vim.fn.filereadable(vim.fn.join({ path, "yarn.lock" }, "/")) == 1
-	-- 						or vim.fn.filereadable(vim.fn.join({ path, "bun.lockb" }, "/")) == 1
-	-- 						or vim.fn.filereadable(vim.fn.join({ path, "bun.lock" }, "/")) == 1
-	-- 						or vim.fn.filereadable(vim.fn.join({ path, "package-lock.json" }, "/")) == 1
-	-- 				end)
-	--
-	-- 				on_dir(monorepo_root or ts_util.get_root_dir(bufnr))
-	-- 			end,
-	-- 			handlers = {
-	-- 				["textDocument/publishDiagnostics"] = api.filter_diagnostics(
-	-- 				-- Ignore 'This may be converted to an async function' diagnostics.
-	-- 					{ 80006 }
-	-- 				),
-	-- 			},
-	-- 		})
-	-- 	end,
-	-- },
+            local kind_icons = require("mecodes.icons").kind
+
+            local cmp_select = { behavior = cmp.SelectBehavior.Select }
+            local luasnip = require("luasnip")
+            local ELLIPSIS_CHAR = "…"
+            local MAX_LABEL_WIDTH = 35
+            local MIN_LABEL_WIDTH = 15
+            cmp.setup({
+                snippet = {
+                    expand = function(args)
+                        luasnip.lsp_expand(args.body) -- For `luasnip` users.
+                    end,
+                },
+                window = {
+                    -- explicitly set border + winhighlight (bordered() alone doesn't work, see nvim-cmp#2042)
+                    completion = {
+                        border = "rounded",
+                        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+                    },
+                    documentation = {
+                        border = "rounded",
+                        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+                    },
+                },
+                mapping = cmp.mapping.preset.insert({
+                    -- Scroll the documentation window [b]ack / [f]orward
+                    ["<C-f>"] = cmp.mapping.scroll_docs(-8),
+                    ["<C-d>"] = cmp.mapping.scroll_docs(8),
+
+                    -- Accept ([y]es) the completion.
+                    ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+                    ["<C-Space>"] = cmp.mapping.complete(),
+
+                    -- Select next/previous item with Tab / Shift + Tab
+                    ["<Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_next_item(cmp_select)
+                        elseif luasnip.expand_or_locally_jumpable() then
+                            luasnip.expand_or_jump()
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
+                    ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item(cmp_select)
+                        elseif luasnip.locally_jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
+                }),
+
+                sources = cmp.config.sources({
+                    { name = "nvim_lsp" },
+                    { name = "luasnip" }, -- For luasnip users.
+                    { name = "buffer" },
+                    { name = "path" },
+                }),
+
+                formatting = {
+                    fields = { "kind", "abbr", "menu" },
+                    format = function(entry, vim_item)
+                        vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
+                        vim_item.menu = ({
+                            nvim_lsp = "[L]",
+                            luasnip = "[S]",
+                            buffer = "[B]",
+                            path = "[P]",
+                        })[entry.source.name]
+                        local label = vim_item.abbr
+                        local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
+                        if truncated_label ~= label then
+                            vim_item.abbr = truncated_label .. ELLIPSIS_CHAR
+                        elseif string.len(label) < MIN_LABEL_WIDTH then
+                            local padding = string.rep(" ", MIN_LABEL_WIDTH - string.len(label))
+                            vim_item.abbr = label .. padding
+                        end
+                        return vim_item
+                    end,
+                },
+            })
+
+            vim.diagnostic.config({
+                float = {
+                    border = "rounded",
+                    source = "if_many",
+                    header = "Diagnostics",
+                    focusable = true,
+                },
+                update_in_insert = false,
+                severity_sort = true,
+            })
+        end,
+    },
+
     {
         "mfussenegger/nvim-jdtls",
         ft = "java",
