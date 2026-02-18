@@ -13,7 +13,7 @@ return {
 	keys = {
 		{ "<leader>tt", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
 		{
-			"<leader>fj",
+			"<C-k>",
 			function()
 				if require("trouble").is_open() then
 					require("trouble").prev({ skip_groups = true, jump = true })
@@ -27,7 +27,7 @@ return {
 			desc = "Previous Trouble/Quickfix Item",
 		},
 		{
-			"<leader>fk",
+			"<C-j>",
 			function()
 				if require("trouble").is_open() then
 					require("trouble").next({ skip_groups = true, jump = true })
