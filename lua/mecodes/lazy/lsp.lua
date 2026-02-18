@@ -30,8 +30,8 @@ return {
 				),
 			})
 
-			require("fidget").setup({})
-			require("mason").setup()
+            	-- jdtls is handled separately by mecodes/jdtls.lua via FileType autocmd
+            	automatic_enable = { exclude = { "jdtls" } },
 			require("mason-lspconfig").setup({
 				ensure_installed = {
 					"lua_ls",

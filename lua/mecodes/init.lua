@@ -13,6 +13,7 @@ local autocmd = vim.api.nvim_create_autocmd
 local yank_group = augroup("HighlightYank", { clear = true })
 local cd_to_arg_dir_group = augroup("cd-to-pwd", { clear = true })
 local buf_enter_group = augroup("buf_enter", { clear = true })
+local jdtls_group = augroup("jdtls_lsp", { clear = true })
 
 function R(name)
     require("plenary.reload").reload_module(name)
@@ -60,6 +61,15 @@ autocmd("VimEnter", {
         end
     end,
     desc = "cd to passed $PWD when vim starts.",
+})
+
+-- Setup our JDTLS server any time we open up a java file
+autocmd("FileType", {
+    group = jdtls_group,
+    pattern = "java",
+    callback = function()
+        require("mecodes.jdtls").setup_jdtls()
+    end,
 })
 
 autocmd("LspAttach", {
