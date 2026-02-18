@@ -74,52 +74,63 @@ autocmd("FileType", {
 autocmd("LspAttach", {
     group = MecodesGroup,
     callback = function(e)
-        local opts = { buffer = e.buf, silent = true }
         vim.keymap.set("n", "gd", function()
             vim.lsp.buf.definition()
-        end, opts)
+        end, { buffer = e.buf, silent = true, desc = "Go to Definition" })
+
         vim.keymap.set("n", "gD", function()
             vim.lsp.buf.declaration()
-        end, opts)
+        end, { buffer = e.buf, silent = true })
+
         vim.keymap.set("n", "gi", function()
             vim.lsp.buf.implementation()
-        end, opts)
+        end, { buffer = e.buf, silent = true, desc = "Go To Implementation" })
+
         vim.keymap.set("n", "gt", function()
             vim.lsp.buf.type_definition()
-        end, opts)
+        end, { buffer = e.buf, silent = true, desc = "Go to Type Definition" })
+
         vim.keymap.set("n", "K", function()
             vim.lsp.buf.hover({ border = "rounded", max_height = 25, max_width = 90 })
-        end, opts)
+        end, { buffer = e.buf, silent = true, desc = "Hover" })
+
         vim.keymap.set("n", "<leader>ws", function()
             vim.lsp.buf.workspace_symbol()
-        end, opts)
+        end, { buffer = e.buf, silent = true, desc = "List Document Symbols" })
+
         vim.keymap.set("n", "<leader>d", function()
             vim.diagnostic.open_float({ max_height = 25, max_width = 90 })
-        end, opts)
+        end, { buffer = e.buf, silent = true, desc = "Open Diagnostic Float" })
+
         vim.keymap.set("n", "<leader>ca", function()
             vim.lsp.buf.code_action()
-        end, opts)
+        end, { buffer = e.buf, silent = true, desc = "Code Action" })
+
         vim.keymap.set("n", "<leader>gr", function()
             vim.lsp.buf.references()
-        end, opts)
+        end, { buffer = e.buf, silent = true, desc = "List References Under Cursor" })
+
         vim.keymap.set("n", "<leader>rn", function()
             vim.lsp.buf.rename()
-        end, opts)
+        end, { buffer = e.buf, silent = true, desc = "Rename Buffer" })
+
         vim.keymap.set("i", "<C-h>", function()
             vim.lsp.buf.signature_help()
-        end, opts)
+        end, { buffer = e.buf, silent = true, desc = "Signature Help Under Cursor" })
+
         vim.keymap.set("n", "<leader>[d", function()
             vim.diagnostic.jump({ count = 1 })
-        end, opts)
+        end, { buffer = e.buf, silent = true, desc = "Next Diagnostic" })
+
         vim.keymap.set("n", "<leader>]d", function()
             vim.diagnostic.jump({ count = -1 })
-        end, opts)
-        vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<cr>", opts)
-        vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>", opts)
+        end, { buffer = e.buf, silent = true, desc = "Prev Diagnostic" })
+
+        vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<cr>", { buffer = e.buf, silent = true })
+        vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>", { buffer = e.buf, silent = true })
         vim.keymap.set("n", "<leader>lh", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = e.buf }), { bufnr = e.buf })
-        end, opts)
-
+        end, { buffer = e.buf, silent = true, desc = "Inlay Hint Toggle" })
 
         local client = vim.lsp.get_clients({ id = e.data.client_id })[1]
         if not client then return end
