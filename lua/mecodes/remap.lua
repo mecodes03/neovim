@@ -124,12 +124,17 @@ vim.keymap.set("n", "<leader>tr", ":lua ToggleTransparency()<CR>", { desc = "Tog
 vim.keymap.set("n", "<leader>rh", ":noh<CR>", { silent = true, desc = "unhighlight" })
 
 -- toggle cursorline
-vim.keymap.set("n", "<leader>tc",
-	function()
-		if vim.o.cursorlineopt == "" then
+vim.keymap.set("n", "<leader>tl", function()
+		-- enable if not enabled
+		if not vim.o.cursorline then
+			vim.o.cursorline = true
+		end
+
+		if vim.o.cursorlineopt == "number" then
+			vim.o.cursorlineopt = "both"
+		elseif vim.o.cursorlineopt == "both" then
 			vim.o.cursorlineopt = "number"
-		elseif vim.o.cursorlineopt == "number" then
-			vim.o.cursorlineopt = ""
 		end
 	end,
-	{ silent = true, desc = "Toggle Cursorline" })
+	{ silent = true, desc = "Toggle Cursorline" }
+)
