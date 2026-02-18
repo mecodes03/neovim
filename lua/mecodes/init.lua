@@ -138,5 +138,19 @@ autocmd("LspAttach", {
                 callback = vim.lsp.buf.clear_references,
             })
         end
+
+        local orig = vim.lsp.util.convert_input_to_markdown_lines
+
+        -- remove ugly urls
+        vim.lsp.util.convert_input_to_markdown_lines = function(input, ...)
+            local lines = orig(input, ...)
+
+            for i, line in ipairs(lines) do
+                -- remove raw jdt:// links
+                lines[i] = line:gsub("%(jdt://[^%)]+%)", "")
+            end
+
+            return lines
+        end
     end,
 })
