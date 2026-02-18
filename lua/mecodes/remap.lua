@@ -119,3 +119,6 @@ end, { desc = "Toggle Mouse" })
 
 -- toggle Transparency
 vim.keymap.set("n", "<leader>tr", ":lua ToggleTransparency()<CR>", { desc = "Toggle Transparency" })
+
+-- unhighlight
+vim.keymap.set("n", "<leader>rh", ":noh<CR>", { silent = true, desc = "unhighlight" })
