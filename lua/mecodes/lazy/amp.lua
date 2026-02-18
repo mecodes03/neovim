@@ -97,8 +97,7 @@ return {
 				title_pos = "center",
 			})
 
-			-- vim.api.nvim_set_option_value("wrap", false, { win = win })
-			-- vim.api.nvim_set_option_value("linebreak", true, { win = win })
+			vim.api.nvim_set_option_value("cursorline", false, { win = win })
 
 			local function send()
 				local prompt_lines = vim.api.nvim_buf_get_lines(input_buf, 0, -1, false)
