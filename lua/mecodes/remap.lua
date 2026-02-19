@@ -10,7 +10,7 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Join lines, keep cursor position" })
 
 -- up and down
-vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
+vim.keymap.set({ "n", "v" }, "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
 vim.keymap.set({ "n", "v" }, "<C-f>", "<C-u>zz", { desc = "Scroll up and center" })
 
 -- find and center (corsor stays in center)
@@ -54,7 +54,7 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 -- back to normal mode
-vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true })
+vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true, silent = true })
 
 -- rename current word
 vim.keymap.set("n", "<leader>rr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
@@ -74,16 +74,16 @@ vim.keymap.set("n", "<Tab>", ":bnext<CR>", opts)
 vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", opts)
 
 -- moving
-vim.keymap.set("n", "<C-j>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>lprev<CR>zz")
+vim.keymap.set("n", "<C-j>", "<cmd>cnext<CR>zz", { desc = "prev/next in Quickfix List" })
+vim.keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz", { desc = "prev/next in Quickfix List" })
+vim.keymap.set("n", "<leader>j", "<cmd>lnext<CR>zz", { desc = "prev/next in Location List" })
+vim.keymap.set("n", "<leader>k", "<cmd>lprev<CR>zz", { desc = "prev/next in Location List" })
 
 -- commenting lines
 vim.keymap.set("v", "<leader>/", function()
 	local count = vim.v.count
 	vim.cmd.norm((count > 0 and count or "") .. "gcc")
-end)
+end, { desc = "Toggle Comment" })
 
 vim.keymap.set("n", "<leader>/", function()
 	local count = vim.v.count
@@ -91,19 +91,18 @@ vim.keymap.set("n", "<leader>/", function()
 		count = count + 1 -- Include the current line
 	end
 	vim.cmd.norm((count > 0 and count or "") .. "gcc")
-end)
+end, { desc = "Toggle Comment" })
 
 vim.keymap.set("o", "<leader>/", function()
 	local count = vim.v.count
 	vim.cmd.norm((count > 0 and count or "") .. "gcc")
-end)
+end, { desc = "Toggle Comment" })
 
 vim.keymap.set("x", "<leader>/", function()
 	local count = vim.v.count
 	vim.cmd.norm((count > 0 and count or "") .. "gcc")
-end)
+end, { desc = "Toggle Comment" })
 
-vim.keymap.set("n", "<Esc>", "<cmd>noh<CR><Esc>", { desc = "Clear search highlights" })
 vim.keymap.set("n", "<leader>la", "<cmd>Lazy<cr>", { desc = "Lazy plugin manager" })
 
 -- mouse toggle

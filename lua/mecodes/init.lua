@@ -80,7 +80,7 @@ autocmd("LspAttach", {
 
         vim.keymap.set("n", "gD", function()
             vim.lsp.buf.declaration()
-        end, { buffer = e.buf, silent = true })
+        end, { buffer = e.buf, silent = true }, { desc = "Go to Declaration" })
 
         vim.keymap.set("n", "gi", function()
             vim.lsp.buf.implementation()

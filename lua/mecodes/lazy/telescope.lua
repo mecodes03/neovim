@@ -60,13 +60,13 @@ return {
 		vim.keymap.set("n", "<leader>pw", function()
 			local word = vim.fn.expand("<cword>")
 			builtin.grep_string({ search = word })
-		end)
+		end, { desc = "Grep Current [W]ord" })
 
 		-- to grap a string (the string until whitespace)
 		vim.keymap.set("n", "<leader>ps", function()
 			local word = vim.fn.expand("<cWORD>")
 			builtin.grep_string({ search = word })
-		end)
+		end, { desc = "Grep Current [S]tring" })
 
 		-- vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
 		-- vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
@@ -74,7 +74,7 @@ return {
 
 		vim.keymap.set("n", "<leader>ss", function()
 			builtin.grep_string({ search = vim.fn.input("Grep > ") })
-		end)
+		end, { desc = "Grep String" })
 
 		vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 

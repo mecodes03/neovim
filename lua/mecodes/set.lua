@@ -43,8 +43,8 @@ local options = {
 	-- showtabline = 2,                             -- always show the tab line
 }
 -- Allow j/k when navigating wrapped lines
-vim.keymap.set({ "n", "v", }, "j", "gj")
-vim.keymap.set({ "n", "v", }, "k", "gk")
+vim.keymap.set({ "n", "v", }, "j", "gj", { desc = "Nav In Wrapped Lines" })
+vim.keymap.set({ "n", "v", }, "k", "gk", { desc = "Nav In Wrapped Lines" })
 
 -- Apply options
 for k, v in pairs(options) do o[k] = v end
