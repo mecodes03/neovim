@@ -22,6 +22,8 @@ return {
 			solidity = { "forge_fmt" },
 			nginx = { "nginxfmt" },
 			python = { "isort" },
+			java = { "google-java-format" },
+
 			javascript = JS_FORMATTERS,
 			typescript = JS_FORMATTERS,
 			javascriptreact = JS_FORMATTERS,

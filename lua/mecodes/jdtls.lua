@@ -151,18 +151,12 @@ local function setup_jdtls()
 	local settings = {
 		java = {
 			-- Enable code formatting
-			format = {
-				enabled = true,
-				-- Use the Google Style guide for code formatting
-				settings = {
-					url = vim.fn.stdpath("config") .. "/lang_servers/intellij-java-google-style.xml",
-					profile = "GoogleStyle"
-				}
-			},
-			-- Disable auto build for reducing cpu usage
-			-- {
-			-- 	autobuild = {
-			-- 		enabled = false
+			-- format = {
+			-- 	enabled = true,
+			-- 	-- Use the Google Style guide for code formatting
+			-- 	settings = {
+			-- 		url = vim.fn.stdpath("config") .. "/lang_servers/intellij-java-google-style.xml",
+			-- 		profile = "GoogleStyle"
 			-- 	}
 			-- },
 			-- Enable downloading archives from eclipse automatically
