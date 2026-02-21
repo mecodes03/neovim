@@ -10,7 +10,7 @@ return {
 		end,
 		keys = {
 			{
-				"<leader>a",
+				"<leader>ah",
 				function()
 					require("harpoon"):list():add()
 				end,

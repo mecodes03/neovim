@@ -159,6 +159,10 @@ local function setup_jdtls()
 			-- 		profile = "GoogleStyle"
 			-- 	}
 			-- },
+			-- Disable auto build for reducing cpu usage
+			autobuild = {
+				enabled = false
+			},
 			-- Enable downloading archives from eclipse automatically
 			eclipse = {
 				downloadSource = true
