@@ -1,10 +1,12 @@
+local color = require("mecodes.color")
+
 return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
 		require("lualine").setup({
 			options = {
-				theme = "rose-pine", -- or your favorite theme
+				theme = color.color_scheme, -- or your favorite theme
 				section_separators = "",
 				component_separators = "",
 			},
