@@ -36,7 +36,7 @@ return {
 					{ "diff" },
 					{ "branch" },
 				},
-				lualine_y = {},
+				lualine_y = { "progress" },
 				lualine_z = {},
 			},
 		})
