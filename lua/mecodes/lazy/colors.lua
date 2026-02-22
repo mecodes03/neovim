@@ -1,26 +1,25 @@
--- Force transparent backgrounds
-local transparency = true
-local color_scheme = "rose-pine"
+local color = require("mecodes.color")
 
----@param color string
-function ColorMyPencils(color)
-	color = color or color_scheme
-	color_scheme = color
-	vim.cmd.colorscheme(color)
 
-	if transparency then
+---@param _color string
+function ColorMyPencils(_color)
+	_color = _color or color.color_scheme
+	color.color_scheme = _color
+	vim.cmd.colorscheme(_color)
+
+	if color.transparency then
 		MakeTransparence()
 	end
 end
 
 function ToggleTransparency()
-	if transparency then
-		transparency = false
+	if color.transparency then
+		color.transparency = false
 	else
-		transparency = true
+		color.transparency = true
 	end
 
-	ColorMyPencils(color_scheme)
+	ColorMyPencils(color.color_scheme)
 end
 
 function MakeTransparence()
@@ -83,7 +82,7 @@ return {
 					floats = "dark", -- style for floating windows
 				},
 			})
-			if color_scheme == "tokyonight" then
+			if color.color_scheme == "tokyonight" then
 				ColorMyPencils("tokyonight")
 			end
 		end,
@@ -96,6 +95,16 @@ return {
 		config = function()
 			require("catppuccin").setup({
 				-- transparent_background = transparency,
+				flavour = "mocha", -- latte, frappe, macchiato, mocha
+				background = { -- :h background
+					light = "latte",
+					dark = "mocha",
+				},
+				transparent_background = false, -- disables setting the background color.
+				float = {
+					transparent = false, -- enable transparent floating windows
+					solid = false,  -- use solid styling for floating windows, see |winborder|
+				},
 				term_colors = true,
 				no_italic = true,
 				no_bold = true,
@@ -105,7 +114,7 @@ return {
 					treesitter = true,
 				},
 			})
-			if color_scheme == "catppuccin" then
+			if color.color_scheme == "catppuccin" then
 				ColorMyPencils("catppuccin")
 			end
 		end,
@@ -135,7 +144,7 @@ return {
 				enable = { terminal = true },
 			})
 
-			if color_scheme == "rose-pine" then
+			if color.color_scheme == "rose-pine" then
 				ColorMyPencils("rose-pine")
 			end
 		end,
