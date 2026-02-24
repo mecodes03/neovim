@@ -11,8 +11,7 @@ return {
 				component_separators = "",
 			},
 			sections = {
-				lualine_a = {
-				},
+				lualine_a = {},
 				lualine_b = {
 					{
 						"filename",
@@ -30,14 +29,14 @@ return {
 					},
 				},
 				lualine_c = {
-					"diagnostics"
+					"diagnostics",
 				},
 				lualine_x = {
 					{ "diff" },
 					{ "branch" },
 				},
 				lualine_y = { "progress" },
-				lualine_z = {},
+				lualine_z = { "location" },
 			},
 		})
 	end,
