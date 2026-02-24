@@ -45,6 +45,18 @@ vim.keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", { noremap = true, silent
 vim.keymap.set("v", "<", "<gv", { desc = "Indent left and reselect" })
 vim.keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
 
+vim.keymap.set("n", "<leader>d", function()
+	vim.diagnostic.open_float({ max_height = 25, max_width = 90 })
+end, { silent = true, desc = "Open Diagnostic Float" })
+
+vim.keymap.set("n", "<leader>[d", function()
+	vim.diagnostic.jump({ count = 1 })
+end, { silent = true, desc = "Next Diagnostic" })
+
+vim.keymap.set("n", "<leader>]d", function()
+	vim.diagnostic.jump({ count = -1 })
+end, { silent = true, desc = "Prev Diagnostic" })
+
 -- Select all
 vim.keymap.set("n", "<leader>sa", "ggVG", { desc = "Select all" })
 
@@ -57,8 +69,12 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true, silent = true })
 
 -- rename current word
-vim.keymap.set("n", "<leader>rr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
-	{ desc = "Search/replace word under cursor" })
+vim.keymap.set(
+	"n",
+	"<leader>rr",
+	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+	{ desc = "Search/replace word under cursor" }
+)
 
 -- make file executable
 vim.keymap.set("n", "<leader>X", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make file executable" })
@@ -124,16 +140,14 @@ vim.keymap.set("n", "<leader>rh", ":noh<CR>", { silent = true, desc = "unhighlig
 
 -- toggle cursorline
 vim.keymap.set("n", "<leader>tl", function()
-		-- enable if not enabled
-		if not vim.o.cursorline then
-			vim.o.cursorline = true
-		end
+	-- enable if not enabled
+	if not vim.o.cursorline then
+		vim.o.cursorline = true
+	end
 
-		if vim.o.cursorlineopt == "number" then
-			vim.o.cursorlineopt = "both"
-		elseif vim.o.cursorlineopt == "both" then
-			vim.o.cursorlineopt = "number"
-		end
-	end,
-	{ silent = true, desc = "Toggle Cursorline" }
-)
+	if vim.o.cursorlineopt == "number" then
+		vim.o.cursorlineopt = "both"
+	elseif vim.o.cursorlineopt == "both" then
+		vim.o.cursorlineopt = "number"
+	end
+end, { silent = true, desc = "Toggle Cursorline" })
