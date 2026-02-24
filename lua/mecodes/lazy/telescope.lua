@@ -22,10 +22,19 @@ return {
 
 						["<C-d>"] = actions.preview_scrolling_down,
 						["<C-f>"] = actions.preview_scrolling_up,
+
+						["<C-e>"] = "delete_buffer",
 					},
 					n = {
+						["<C-k>"] = actions.move_selection_previous, -- move to prev result
+						["<C-j>"] = actions.move_selection_next, -- move to next result
+
+						["<C-l>"] = actions.select_default, -- open file
+
 						["<C-d>"] = actions.preview_scrolling_down,
 						["<C-f>"] = actions.preview_scrolling_up,
+
+						["dd"] = "delete_buffer",
 					},
 				},
 			},
@@ -68,8 +77,8 @@ return {
 			builtin.grep_string({ search = word })
 		end, { desc = "Grep Current [S]tring" })
 
-		-- vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-		-- vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+		vim.keymap.set("n", "<leader>S", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
+		vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 		-- vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 
 		vim.keymap.set("n", "<leader>ss", function()
