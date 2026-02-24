@@ -3,5 +3,5 @@ IsTransparency = false
 
 return {
 	color_scheme = DefaultColorScheme,
-	transparency = IsTransparency
+	transparency = IsTransparency,
 }
