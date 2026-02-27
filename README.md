@@ -20,10 +20,8 @@ lua/mecodes/
     ├── bufferline.lua      → Buffer tabs
     ├── colors.lua          → Colorschemes (rose-pine, tokyonight, catppuccin, onedark)
     ├── conform.lua         → Auto-formatting
-    ├── fugitive.lua        → Git (vim-fugitive)
     ├── gitsigns.lua        → Git gutter signs
     ├── harpoon.lua         → Quick file switching
-    ├── highlight_colors.lua→ Inline color previews
     ├── leap.lua            → Motion plugin
     ├── lsp.lua             → LSP + Mason + nvim-cmp (completions, snippets, diagnostics)
     ├── lua-line.lua        → Statusline
@@ -34,9 +32,7 @@ lua/mecodes/
     ├── treesitter.lua      → Syntax highlighting / parsing
     ├── trouble.lua         → Diagnostics list
     ├── ufo.lua             → Code folding
-    ├── undotree.lua        → Undo history visualizer
     └── markdown.lua        → Markdown Reader
-after/lsp/                  → Per-server LSP overrides (lua_ls, tailwindcss)
 ```
 
 ## Key Keymaps
@@ -48,7 +44,8 @@ after/lsp/                  → Per-server LSP overrides (lua_ls, tailwindcss)
 | `<C-s>` | n | Save |
 | `<C-x>` | n | Quit |
 | `<C-d>` / `<C-f>` | n | Scroll down / up (centered) |
-| `<Tab>` / `<S-Tab>` | n | Next / prev buffer |
+| `<C-j>` / `<C-k>` | n | Next / prev (normal model)  |
+| `<Tab>` / `<S-Tab>` | n | Next / prev (insert mode) |
 | `<leader>y` | n,v | Yank to system clipboard |
 | `<leader>p` | x | Paste without overwriting clipboard |
 | `<leader>/` | n,v | Toggle comment |
@@ -59,6 +56,7 @@ after/lsp/                  → Per-server LSP overrides (lua_ls, tailwindcss)
 | `gd` / `gD` / `gi` / `gt` | n | Go to def / declaration / impl / type def |
 | `<leader>tr` | n | Toggle transparency |
 | `<leader>tm` | n | Toggle mouse |
+| `<leader>tl` | n | Toggle cursorline |
 | `<leader>la` | n | Open Lazy plugin manager |
 | `V` + `J`/`K` | v | Move selected lines down/up |
 | Arrow keys | n | Resize splits |

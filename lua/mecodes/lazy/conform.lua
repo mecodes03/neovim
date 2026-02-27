@@ -33,7 +33,7 @@ return {
 			html = JS_FORMATTERS,
 
 			prisma = { "prisma_fmt" },
-			graphql = { "prettier" }
+			graphql = { "prettier" },
 		},
 
 		formatters = {
