@@ -15,6 +15,7 @@ return {
 			lua = { "stylua" },
 			rust = { "rustfmt", lsp_format = "fallback" },
 			json = { "fixjson" },
+			jsonc = { "fixjson" },
 			yaml = { "prettier" },
 			toml = { "taplo" },
 			markdown = { "markdownlint" },
@@ -30,7 +31,7 @@ return {
 			typescriptreact = JS_FORMATTERS,
 			css = JS_FORMATTERS,
 			scss = JS_FORMATTERS,
-			html = JS_FORMATTERS,
+			html = { "ast-grep", "rustywind" },
 
 			prisma = { "prisma_fmt" },
 			graphql = { "prettier" },

@@ -95,7 +95,11 @@ return {
 		},
 
 		keys = {
-			{ "<leader>o", ":TSJToggle<CR>", desc = "Toggle join/split" },
+			{
+				"<leader>si",
+				":TSJToggle<CR>",
+				desc = "Toggle join/split",
+			},
 		},
 	},
 
