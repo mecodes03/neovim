@@ -51,6 +51,16 @@ autocmd("BufEnter", {
 autocmd("VimEnter", {
 	group = cd_to_arg_dir_group,
 	callback = function()
+		local cwd = vim.fn.getcwd()
+		print(cwd)
+
+		-- load obsidian if in vault directory
+		if cwd:find("mnt/d/valte") then
+			require("lazy").load({ plugins = { "obsidian.nvim" } })
+			print("obsidian loaded")
+		end
+
+		-- cd to file's directory if file passed as argument
 		if vim.fn.argc() > 0 then
 			local file = vim.fn.argv(0)
 			if file ~= "" then
