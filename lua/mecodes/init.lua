@@ -55,7 +55,7 @@ autocmd("VimEnter", {
 		print(cwd)
 
 		-- load obsidian if in vault directory
-		if cwd:find("mnt/d/valte") then
+		if cwd:find("/home/mecodes/vault") then
 			require("lazy").load({ plugins = { "obsidian.nvim" } })
 			print("obsidian loaded")
 		end
