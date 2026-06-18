@@ -235,6 +235,11 @@ return {
 			vim.cmd("ObsidianSearch")
 		end, { desc = "Obsidian: Search" })
 
+		-- yesterday's daily note
+		vim.keymap.set("n", "<leader>oy", function()
+			vim.cmd("ObsidianYesterday")
+		end, { desc = "Obsidian: Yesterday's daily note" })
+
 		-- today's daily note
 		vim.keymap.set("n", "<leader>oj", function()
 			vim.cmd("ObsidianToday")
