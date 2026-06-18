@@ -1,6 +1,6 @@
 local constants = require("mecodes.constants")
 
-local JS_FORMATTERS = { "prettier", "rustywind" }
+local JS_FORMATTERS = { "prettier", "rustywind", stop_after_first = true }
 
 return {
 	"stevearc/conform.nvim",
@@ -68,18 +68,6 @@ return {
 				},
 			},
 		},
-
-		format_on_save = function(bufnr)
-			local ignore_filetypes = { "svg" }
-			if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
-				return
-			end
-			local bufname = vim.api.nvim_buf_get_name(bufnr)
-			if bufname:match("/node_modules/") then
-				return
-			end
-			return { timeout_ms = 500, lsp_format = "fallback" }
-		end,
 	},
 
 	config = function(_, opts)
