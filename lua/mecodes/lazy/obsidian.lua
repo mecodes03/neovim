@@ -255,6 +255,18 @@ return {
 			vim.cmd("ObsidianPasteImg")
 		end, { desc = "Obsidian: Paste image" })
 
+		-- Link Note to Inline Text
+		vim.keymap.set({ "n", "v" }, "<leader>oli", function()
+			local query = vim.fn.input("Query > ")
+			vim.cmd("ObsidianLink " .. query)
+		end, { desc = "Obsidian: Link Note to Inline Visual Text", noremap = true })
+
+		-- Create new Note and Link to Inline Text
+		vim.keymap.set({ "n", "v" }, "<leader>oln", function()
+			local title = vim.fn.input("Note Title > ")
+			vim.cmd("ObsidianLinkNew " .. title)
+		end, { desc = "Obsidian: Create and Link Note to Inline Visual Text", noremap = true })
+
 		-- follow link under cursor
 		vim.keymap.set("n", "<leader>gl", function()
 			vim.cmd("ObsidianFollowLink")
