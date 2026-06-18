@@ -225,15 +225,17 @@ return {
 			end
 		end, { desc = "Obsidian: New note" })
 
+		-- TODO: in telescope check if the currect repo is vault, if yes then use these else default ones.(no need for multiple keymaps)
+
 		-- quick switch
-		vim.keymap.set("n", "<leader>os", function()
+		vim.keymap.set("n", "<leader>osf", function()
 			vim.cmd("ObsidianQuickSwitch")
 		end, { desc = "Obsidian: Quick switch" })
 
 		-- search
-		vim.keymap.set("n", "<leader>of", function()
+		vim.keymap.set("n", "<leader>osg", function()
 			vim.cmd("ObsidianSearch")
-		end, { desc = "Obsidian: Search" })
+		end, { desc = "Obsidian: Search", noremap = true })
 
 		-- yesterday's daily note
 		vim.keymap.set("n", "<leader>oy", function()
