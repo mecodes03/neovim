@@ -57,7 +57,9 @@ return {
 		vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
 
 		-- from everyfile, even in node_modules
-		vim.keymap.set("n", "<leader>sp", builtin.find_files, { desc = "[S]earch [F]iles" })
+		vim.keymap.set("n", "<leader>sp", function()
+			builtin.find_files({ hidden = true, follow = true })
+		end, { desc = "[S]earch [F]iles" })
 
 		vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 
