@@ -68,6 +68,9 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- back to normal mode
 vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true, silent = true })
 
+-- back to normal mode
+vim.keymap.set("i", "jk", "<Esc>", { noremap = true, silent = true })
+
 -- rename current word
 vim.keymap.set(
 	"n",
