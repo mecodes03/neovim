@@ -52,7 +52,7 @@ autocmd("VimEnter", {
 	group = cd_to_arg_dir_group,
 	callback = function()
 		local cwd = vim.fn.getcwd()
-		print(cwd)
+		-- print(cwd)
 
 		-- load obsidian if in vault directory
 		if cwd:find("/home/mecodes/vault") then
@@ -120,8 +120,8 @@ autocmd("LspAttach", {
 			vim.lsp.buf.rename()
 		end, { buffer = e.buf, silent = true, desc = "Rename Buffer" })
 
-		vim.keymap.set("i", "<C-h>", function()
-			vim.lsp.buf.signature_help()
+		vim.keymap.set("i", "<C-s>", function()
+			vim.lsp.buf.signature_help({ border = "rounded", max_height = 25, max_width = 90 })
 		end, { buffer = e.buf, silent = true, desc = "Signature Help Under Cursor" })
 
 		vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<cr>", { buffer = e.buf, silent = true })
