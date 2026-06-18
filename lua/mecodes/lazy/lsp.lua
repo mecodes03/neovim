@@ -134,8 +134,8 @@ return {
 				},
 				mapping = cmp.mapping.preset.insert({
 					-- Scroll the documentation window [b]ack / [f]orward
-					["<C-f>"] = cmp.mapping.scroll_docs(-8),
-					["<C-d>"] = cmp.mapping.scroll_docs(8),
+					["<C-f>"] = cmp.mapping.scroll_docs(-4),
+					["<C-d>"] = cmp.mapping.scroll_docs(4),
 
 					-- Accept ([y]es) the completion.
 					["<C-y>"] = cmp.mapping.confirm({ select = true }),
