@@ -79,10 +79,12 @@ return {
 				note:add_alias(note.title)
 			end
 
-			local path = vim.api.nvim_buf_get_name(0)
-			if path:find("/home/mecodes/vault/personal/notes/") or path:find("/home/mecodes/vault/personal/notes/") then
-				note:add_tag("notes")
-			end
+			note:add_tag("notes")
+
+			-- local path = vim.api.nvim_buf_get_name(0)
+			-- if path:find("/home/mecodes/vault/personal/notes/") or path:find("/home/mecodes/vault/personal/notes/") then
+			-- note:add_tag("notes")
+			-- end
 
 			local out = { id = note.id, aliases = note.aliases, tags = note.tags }
 
