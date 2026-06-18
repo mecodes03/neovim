@@ -32,8 +32,9 @@ return {
 					"diagnostics",
 				},
 				lualine_x = {
-					{ "diff" },
-					{ "branch", "filetype" },
+					"diff",
+					"branch",
+					"filetype",
 				},
 				lualine_y = { "progress" },
 				lualine_z = { "location" },
