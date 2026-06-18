@@ -52,7 +52,10 @@ return {
 
 		vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 
-		vim.keymap.set("n", "<leader>sf", builtin.git_files, { desc = "[S]earch [F]iles in git" })
+		vim.keymap.set("n", "<leader>sf", function()
+			-- TODO: check if the current dir is a git directory, if No? print "Not a Gir Repo"
+			builtin.git_files()
+		end, { desc = "[S]earch [F]iles in git" })
 
 		vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
 
