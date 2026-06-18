@@ -35,12 +35,11 @@ return {
 				ensure_installed = {
 					"lua_ls",
 					"rust_analyzer",
-					-- "ts_ls", -- commenting this out so we can use some other faster ts lsp :)
 					"gopls",
+					-- "ts_ls", -- commenting this out so we can use some other faster ts lsp :)
+					"tsgo",
 					"html",
 					"tailwindcss",
-					"dockerls",
-					"prismals",
 					-- haven't added solidity, but we have installed using Mason
 				},
 			})
@@ -125,13 +124,14 @@ return {
 					-- explicitly set border + winhighlight (bordered() alone doesn't work, see nvim-cmp#2042)
 					completion = {
 						border = "rounded",
-						winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+						-- winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
 					},
 					documentation = {
 						border = "rounded",
-						winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+						-- winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
 					},
 				},
+
 				mapping = cmp.mapping.preset.insert({
 					-- Scroll the documentation window [b]ack / [f]orward
 					["<C-f>"] = cmp.mapping.scroll_docs(-4),
@@ -193,6 +193,10 @@ return {
 			})
 
 			vim.diagnostic.config({
+				virtual_text = {
+					spacing = 2,
+					prefix = "●",
+				},
 				float = {
 					border = "rounded",
 					source = "if_many",
