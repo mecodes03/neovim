@@ -240,10 +240,10 @@ return {
 			vim.cmd("ObsidianToday")
 		end, { desc = "Obsidian: Today's daily note" })
 
-		-- yesterday's daily note
-		vim.keymap.set("n", "<leader>oy", function()
-			vim.cmd("ObsidianYesterday")
-		end, { desc = "Obsidian: Yesterday's daily note" })
+		-- tomorrow's daily note
+		vim.keymap.set("n", "<leader>od", function()
+			vim.cmd("ObsidianTomorrow")
+		end, { desc = "Obsidian: Today's daily note" })
 
 		-- open inbox
 		vim.keymap.set("n", "<leader>oi", function()
