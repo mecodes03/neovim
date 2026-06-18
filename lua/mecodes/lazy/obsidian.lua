@@ -256,9 +256,9 @@ return {
 		end, { desc = "Obsidian: Paste image" })
 
 		-- follow link under cursor
-		vim.keymap.set("n", "<leader>ol", function()
+		vim.keymap.set("n", "<leader>gl", function()
 			vim.cmd("ObsidianFollowLink")
-		end, { desc = "Obsidian: Follow link" })
+		end, { desc = "Obsidian: Follow link", noremap = true })
 
 		-- backlinks
 		vim.keymap.set("n", "<leader>ob", function()
