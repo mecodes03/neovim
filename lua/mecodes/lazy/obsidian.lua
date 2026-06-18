@@ -23,9 +23,9 @@ return {
 						-- Optional, default tags to add to each new daily note created.
 						default_tags = { "personal", "daily" },
 						-- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
-						template = nil
+						template = nil,
 					},
-				}
+				},
 			},
 			{
 				name = "work",
@@ -42,9 +42,9 @@ return {
 						-- Optional, default tags to add to each new daily note created.
 						default_tags = { "work", "daily" },
 						-- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
-						template = nil
+						template = nil,
 					},
-				}
+				},
 			},
 		},
 
@@ -226,8 +226,6 @@ return {
 				vim.cmd("ObsidianNew " .. title)
 			end
 		end, { desc = "Obsidian: New note" })
-
-		-- TODO: in telescope check if the currect repo is vault, if yes then use these else default ones.(no need for multiple keymaps)
 
 		-- quick switch
 		vim.keymap.set("n", "<leader>osf", function()
