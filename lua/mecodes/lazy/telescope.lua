@@ -53,6 +53,7 @@ return {
 		vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 
 		vim.keymap.set("n", "<leader>sf", function()
+			-- TODO: in telescope check if the currect repo is vault, if yes then use these else default ones.(no need for multiple keymaps)
 			-- TODO: check if the current dir is a git directory, if No? print "Not a Gir Repo"
 			builtin.git_files()
 		end, { desc = "[S]earch [F]iles in git" })
@@ -64,7 +65,10 @@ return {
 			builtin.find_files({ hidden = true, follow = true })
 		end, { desc = "[S]earch [F]iles" })
 
-		vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
+		vim.keymap.set("n", "<leader>sg", function()
+			-- TODO:  check if the currect repo is vault, if yes then use obsidian search/switch methods
+			builtin.live_grep()
+		end, { desc = "[S]earch by [G]rep" })
 
 		-- vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 
