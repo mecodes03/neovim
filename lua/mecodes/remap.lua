@@ -35,6 +35,9 @@ vim.keymap.set("n", "<C-x>", "<cmd> q <CR>", { noremap = true, silent = true, de
 -- delete buffer
 vim.keymap.set("n", "<leader>x", "<cmd>bdelete<CR>", { silent = true, desc = "Delete buffer" })
 
+-- delete buffer force
+vim.keymap.set("n", "<leader>fx", "<cmd>bdelete!<CR>", { silent = true, desc = "Delete buffer Force" })
+
 -- delete single character without copying into register
 vim.keymap.set("n", "x", '"_x', { noremap = true, silent = true, desc = "Delete char without yank" })
 
