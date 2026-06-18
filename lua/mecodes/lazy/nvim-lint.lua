@@ -13,7 +13,9 @@ return {
 			-- javascript = { "eslint_d" },
 			-- typescript = { "eslint_d" },
 			solidity = { "solhint" },
-			python = { "flake8" }
+			python = { "flake8" },
+			env = { "dotenv_linter" },
+			deno = { "deno" },
 		}
 	end,
 }
