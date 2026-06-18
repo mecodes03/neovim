@@ -220,8 +220,11 @@ return {
 	-- {
 	-- 	"ray-x/lsp_signature.nvim",
 	-- 	event = "InsertEnter",
-	-- 	config = function()
-	-- 		require("lsp_signature").setup()
-	-- 	end,
+	-- 	opts = {
+	-- 		bind = true,
+	-- 		handler_opts = { border = "rounded" },
+	-- 		floating_window = false,
+	-- 		max_width = 80,
+	-- 	},
 	-- },
 }
