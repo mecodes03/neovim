@@ -157,3 +157,6 @@ vim.keymap.set("n", "<leader>tl", function()
 		vim.o.cursorlineopt = "number"
 	end
 end, { silent = true, desc = "Toggle Cursorline" })
+
+-- close quickfix
+vim.keymap.set("n", "<leader>q", "<cmd>cclose<CR>", { desc = "close quickfix" })
