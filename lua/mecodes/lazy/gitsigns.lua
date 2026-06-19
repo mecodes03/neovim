@@ -62,7 +62,7 @@ return {
 				-- Navigation
 				map("n", "]c", function()
 					if vim.wo.diff then
-						vim.cmd.normal({ "]c", bang = true })
+						vim.cmd.normal({ "[c", bang = true })
 					else
 						gitsigns.nav_hunk("next")
 					end
@@ -70,33 +70,45 @@ return {
 
 				map("n", "[c", function()
 					if vim.wo.diff then
-						vim.cmd.normal({ "[c", bang = true })
+						vim.cmd.normal({ "]c", bang = true })
 					else
 						gitsigns.nav_hunk("prev")
 					end
 				end, { desc = "Previous hunk" })
 
-				-- Actions
+				-- -----------  ACTIONS ---------------
+
+				-- Stage
 				map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "Stage hunk" })
-				map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Reset hunk" })
+				map("n", "<leader>hS", gitsigns.stage_buffer, { desc = "Stage buffer" })
 				map("v", "<leader>hs", function()
 					gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 				end, { desc = "Stage hunk" })
+
+				-- Reset
+				map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Reset hunk" })
+				map("n", "<leader>hR", gitsigns.reset_buffer, { desc = "Reset buffer" })
 				map("v", "<leader>hr", function()
 					gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 				end, { desc = "Reset hunk" })
-				map("n", "<leader>hS", gitsigns.stage_buffer, { desc = "Stage buffer" })
+
+				-- Undo (undo the last staged hunk, it doensn't cycle through)
 				map("n", "<leader>hu", gitsigns.undo_stage_hunk, { desc = "Undo stage hunk" })
-				map("n", "<leader>hR", gitsigns.reset_buffer, { desc = "Reset buffer" })
+
+				-- Preview
 				map("n", "<leader>hp", gitsigns.preview_hunk, { desc = "Preview hunk" })
-				map("n", "<leader>hb", function()
-					gitsigns.blame_line({ full = true })
-				end, { desc = "Blame line" })
-				map("n", "<leader>tb", gitsigns.toggle_current_line_blame, { desc = "Toggle line blame" })
+
+				-- Diff and Blame
 				map("n", "<leader>hd", gitsigns.diffthis, { desc = "Diff this" })
 				map("n", "<leader>hD", function()
 					gitsigns.diffthis("~")
 				end, { desc = "Diff this ~" })
+				map("n", "<leader>hb", function()
+					gitsigns.blame_line({ full = true })
+				end, { desc = "Blame line" })
+				map("n", "<leader>tb", gitsigns.toggle_current_line_blame, { desc = "Toggle line blame" })
+
+				-- Lines to be Deleted
 				map("n", "<leader>td", gitsigns.toggle_deleted, { desc = "Toggle deleted" })
 			end,
 		})
