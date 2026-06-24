@@ -126,7 +126,7 @@ autocmd("LspAttach", {
 
 		vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<cr>", { buffer = e.buf, silent = true })
 		vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>", { buffer = e.buf, silent = true })
-		vim.keymap.set("n", "<leader>lh", function()
+		vim.keymap.set("n", "<leader>ih", function()
 			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = e.buf }), { bufnr = e.buf })
 		end, { buffer = e.buf, silent = true, desc = "Inlay Hint Toggle" })
 
