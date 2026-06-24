@@ -78,5 +78,9 @@ return {
 			require("conform").format({ async = true, lsp_format = "fallback" })
 			print("Formatting Successful")
 		end, { desc = "Format with conform.nvim" })
+
+		vim.keymap.set({ "n" }, "<leader>ci", function()
+			vim.cmd("ConformInfo")
+		end, { desc = "Format with conform.nvim" })
 	end,
 }
