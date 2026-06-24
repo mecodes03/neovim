@@ -1,10 +1,14 @@
 return {
 	"obsidian-nvim/obsidian.nvim",
 	version = "*", -- use latest release, remove to use latest commit
-	---@module 'obsidian'
-	---@type obsidian.config
-
 	lazy = true,
+	-- commenting event out since obsidian.nvim gets loaded when entering vault
+	-- event = {
+	-- 	"BufReadPre " .. vim.fn.expand("~") .. "/vault/*.md",
+	-- 	"BufNewFile " .. vim.fn.expand("~") .. "/vault/*.md",
+
+	-- 	"VimEnter " .. vim.fn.expand("~") .. "/vault/*.md", -- this doesn't seem to work, so vimenter in init.lua is needed.
+	-- },
 	opts = {
 		legacy_commands = false, -- this will be removed in 4.0.0
 		workspaces = {
@@ -227,14 +231,26 @@ return {
 			end
 		end, { desc = "Obsidian: New note" })
 
+		local builtin = require("telescope.builtin")
+
 		-- quick switch
-		vim.keymap.set("n", "<leader>osf", function()
-			vim.cmd("ObsidianQuickSwitch")
+		vim.keymap.set("n", "<leader>sf", function()
+			local cwd = vim.fn.getcwd()
+			if cwd:find("/home/mecodes/vault") then
+				vim.cmd("ObsidianQuickSwitch")
+			else
+				builtin.git_files()
+			end
 		end, { desc = "Obsidian: Quick switch" })
 
 		-- search
-		vim.keymap.set("n", "<leader>osg", function()
-			vim.cmd("ObsidianSearch")
+		vim.keymap.set("n", "<leader>sg", function()
+			local cwd = vim.fn.getcwd()
+			if cwd:find("/home/mecodes/vault") then
+				vim.cmd("ObsidianSearch")
+			else
+				builtin.git_files()
+			end
 		end, { desc = "Obsidian: Search", noremap = true })
 
 		-- yesterday's daily note
