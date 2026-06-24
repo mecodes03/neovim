@@ -107,10 +107,10 @@ return {
 				root_markers = { "foundry.toml", "hardhat.config.js", ".git" },
 			})
 
-			local kind_icons = require("mecodes.icons").kind
-
 			local cmp_select = { behavior = cmp.SelectBehavior.Select }
 			local luasnip = require("luasnip")
+			local kind_icons = require("mecodes.icons").kind
+
 			local ELLIPSIS_CHAR = "…"
 			local MAX_LABEL_WIDTH = 35
 			local MIN_LABEL_WIDTH = 15
@@ -160,6 +160,9 @@ return {
 							fallback()
 						end
 					end, { "i", "s" }),
+
+					-- abort
+					["<C-e>"] = cmp.mapping.abort(),
 				}),
 
 				sources = cmp.config.sources({
