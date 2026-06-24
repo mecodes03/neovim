@@ -6,75 +6,54 @@ return {
 			"nvim-lua/plenary.nvim",
 		},
 		config = function()
-			require("harpoon"):setup()
-		end,
-		keys = {
-			{
-				"<leader>ah",
-				function()
-					require("harpoon"):list():add()
-				end,
+			local harpoon = require("harpoon")
+			harpoon:setup({})
+
+			-- List Using Telescope
+			vim.keymap.set("n", "<leader>lh", function()
+				harpoon.ui:toggle_quick_menu(harpoon:list())
+			end, { desc = "Open harpoon window [telescope]" })
+
+			-- Append Harpoon
+			vim.keymap.set("n", "<leader>ah", function()
+				harpoon:list():add()
+			end, {
 				desc = "harpoon append file",
-			},
-			{
-				"<leader>A",
-				function()
-					local harpoon = require("harpoon")
-					harpoon.ui:toggle_quick_menu(harpoon:list())
-				end,
-				desc = "harpoon quick menu",
-			},
-			{
-				"<leader>1",
-				function()
-					require("harpoon"):list():select(1)
-				end,
-				desc = "harpoon to file 1",
-			},
-			{
-				"<leader>2",
-				function()
-					require("harpoon"):list():select(2)
-				end,
-				desc = "harpoon to file 2",
-			},
-			{
-				"<leader>3",
-				function()
-					require("harpoon"):list():select(3)
-				end,
-				desc = "harpoon to file 3",
-			},
-			{
-				"<leader>4",
-				function()
-					require("harpoon"):list():select(4)
-				end,
-				desc = "harpoon to file 4",
-			},
-			{
-				"<leader>5",
-				function()
-					require("harpoon"):list():select(5)
-				end,
-				desc = "harpoon to file 5",
-			},
-			{
-				"<M-n>",
-				function()
-					local harpoon = require("harpoon")
-					harpoon:list():next({ ui_nav_wrap = true }) -- enable cycling through list
-				end,
-				desc = "harpoon to next file",
-			},
-			{
-				"<M-m>",
-				function()
-					local harpoon = require("harpoon")
-					harpoon:list():prev({ ui_nav_wrap = true }) -- enable cycling through list
-				end,
-				desc = "harpoon to previous file",
-			},
-		},
+			})
+
+			-- Harpoon Select
+			vim.keymap.set("n", "<leader>1", function()
+				harpoon:list():select(1)
+			end, {
+				desc = "harpoon select 1",
+			})
+			vim.keymap.set("n", "<leader>2", function()
+				harpoon:list():select(2)
+			end, {
+				desc = "harpoon select 2",
+			})
+			vim.keymap.set("n", "<leader>3", function()
+				harpoon:list():select(3)
+			end, {
+				desc = "harpoon select 3",
+			})
+			vim.keymap.set("n", "<leader>4", function()
+				harpoon:list():select(4)
+			end, {
+				desc = "harpoon select 4",
+			})
+
+			vim.keymap.set("n", "<M-j", function()
+				harpoon:list():next({ ui_nav_wrap = true }) -- enable cycling through list
+			end, {
+				desc = "harpoon next",
+			})
+
+			vim.keymap.set("n", "<M-k", function()
+				harpoon:list():prev({ ui_nav_wrap = true }) -- enable cycling through list
+			end, {
+				desc = "harpoon prev",
+			})
+		end,
 	},
 }
