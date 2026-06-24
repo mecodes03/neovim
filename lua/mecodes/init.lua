@@ -100,6 +100,10 @@ autocmd("LspAttach", {
 			vim.lsp.buf.type_definition()
 		end, { buffer = e.buf, silent = true, desc = "Go to Type Definition" })
 
+		vim.keymap.set("n", "gr", function()
+			vim.lsp.buf.references()
+		end, { buffer = e.buf, silent = true, desc = "List References Under Cursor" })
+
 		vim.keymap.set("n", "K", function()
 			vim.lsp.buf.hover({ border = "rounded", max_height = 25, max_width = 90 })
 		end, { buffer = e.buf, silent = true, desc = "Hover" })
@@ -111,10 +115,6 @@ autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>ca", function()
 			vim.lsp.buf.code_action()
 		end, { buffer = e.buf, silent = true, desc = "Code Action" })
-
-		vim.keymap.set("n", "<leader>gr", function()
-			vim.lsp.buf.references()
-		end, { buffer = e.buf, silent = true, desc = "List References Under Cursor" })
 
 		vim.keymap.set("n", "<leader>rn", function()
 			vim.lsp.buf.rename()
