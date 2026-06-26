@@ -39,7 +39,6 @@ return {
 					-- "ts_ls", -- commenting this out so we can use some other faster ts lsp :)
 					"tsgo",
 					"html",
-					"tailwindcss",
 					-- haven't added solidity, but we have installed using Mason
 				},
 			})
@@ -100,6 +99,10 @@ return {
 					if config_file then
 						return on_dir(vim.fs.dirname(config_file))
 					end
+				end,
+				-- kills the aggressive trigger characters at the server level
+				on_attach = function(client)
+					client.server_capabilities.completionProvider.triggerCharacters = {}
 				end,
 			})
 
