@@ -81,70 +81,74 @@ autocmd("FileType", {
 	end,
 })
 
+local cmd = vim.cmd
+local lsp = vim.lsp
+local bo = vim.bo
+
 autocmd("LspAttach", {
 	group = MecodesGroup,
-	callback = function(e)
+	callback = function(args)
 		vim.keymap.set("n", "gd", function()
 			vim.lsp.buf.definition()
-		end, { buffer = e.buf, silent = true, desc = "Go to Definition" })
+		end, { buffer = args.buf, silent = true, desc = "Go to Definition" })
 
 		vim.keymap.set("n", "gD", function()
 			vim.lsp.buf.declaration()
-		end, { buffer = e.buf, silent = true, desc = "Go to Declaration" })
+		end, { buffer = args.buf, silent = true, desc = "Go to Declaration" })
 
 		vim.keymap.set("n", "gi", function()
 			vim.lsp.buf.implementation()
-		end, { buffer = e.buf, silent = true, desc = "Go To Implementation" })
+		end, { buffer = args.buf, silent = true, desc = "Go To Implementation" })
 
 		vim.keymap.set("n", "gt", function()
 			vim.lsp.buf.type_definition()
-		end, { buffer = e.buf, silent = true, desc = "Go to Type Definition" })
+		end, { buffer = args.buf, silent = true, desc = "Go to Type Definition" })
 
-		vim.keymap.set("n", "gr", function()
+		vim.keymap.set("n", "grr", function()
 			vim.lsp.buf.references()
-		end, { buffer = e.buf, silent = true, desc = "List References Under Cursor" })
+		end, { buffer = args.buf, silent = true, desc = "List References Under Cursor" })
 
 		vim.keymap.set("n", "K", function()
 			vim.lsp.buf.hover({ border = "rounded", max_height = 25, max_width = 90 })
-		end, { buffer = e.buf, silent = true, desc = "Hover" })
+		end, { buffer = args.buf, silent = true, desc = "Hover" })
 
 		vim.keymap.set("n", "<leader>ws", function()
 			vim.lsp.buf.workspace_symbol()
-		end, { buffer = e.buf, silent = true, desc = "List Document Symbols" })
+		end, { buffer = args.buf, silent = true, desc = "List Document Symbols" })
 
 		vim.keymap.set("n", "<leader>ca", function()
 			vim.lsp.buf.code_action()
-		end, { buffer = e.buf, silent = true, desc = "Code Action" })
+		end, { buffer = args.buf, silent = true, desc = "Code Action" })
 
-		vim.keymap.set("n", "<leader>rn", function()
+		vim.keymap.set("n", "grn", function()
 			vim.lsp.buf.rename()
-		end, { buffer = e.buf, silent = true, desc = "Rename Buffer" })
+		end, { buffer = args.buf, silent = true, desc = "Rename Buffer" })
 
 		vim.keymap.set("i", "<C-s>", function()
 			vim.lsp.buf.signature_help({ border = "rounded", max_height = 25, max_width = 90 })
-		end, { buffer = e.buf, silent = true, desc = "Signature Help Under Cursor" })
+		end, { buffer = args.buf, silent = true, desc = "Signature Help Under Cursor" })
 
-		vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<cr>", { buffer = e.buf, silent = true })
-		vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>", { buffer = e.buf, silent = true })
+		vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<cr>", { buffer = args.buf, silent = true })
+		vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>", { buffer = args.buf, silent = true })
 		vim.keymap.set("n", "<leader>ih", function()
-			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = e.buf }), { bufnr = e.buf })
-		end, { buffer = e.buf, silent = true, desc = "Inlay Hint Toggle" })
+			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf }), { bufnr = args.buf })
+		end, { buffer = args.buf, silent = true, desc = "Inlay Hint Toggle" })
 
-		local client = vim.lsp.get_clients({ id = e.data.client_id })[1]
+		local client = vim.lsp.get_clients({ id = args.data.client_id })[1]
 		if not client then
 			return
 		end
 
 		-- Document highlight on cursor hold
 		if client.server_capabilities.documentHighlightProvider then
-			local group = vim.api.nvim_create_augroup("LspDocumentHighlight_" .. e.buf, { clear = true })
+			local group = vim.api.nvim_create_augroup("LspDocumentHighlight_" .. args.buf, { clear = true })
 			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-				buffer = e.buf,
+				buffer = args.buf,
 				group = group,
 				callback = vim.lsp.buf.document_highlight,
 			})
 			vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-				buffer = e.buf,
+				buffer = args.buf,
 				group = group,
 				callback = vim.lsp.buf.clear_references,
 			})
@@ -162,6 +166,50 @@ autocmd("LspAttach", {
 			end
 
 			return lines
+		end
+
+		local function is_large(buf)
+			local max_filesize = 100 * 1024 -- 100 KB
+			local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+			if ok and stats and stats.size > max_filesize then
+				return true
+			else
+				return false
+			end
+		end
+
+		-- Disable LSP for files larger than 100KB.
+		if is_large(0) then
+			print("(LSP) DISABLED, file too large")
+			cmd([[lsp stop]])
+			return
+		end
+
+		-- Disable LSP formatting for certain Language Servers where Conform, running a command line
+		-- formatter, will instead be used.
+		if
+			client.name == "cssls"
+			or client.name == "eslint"
+			or client.name == "html"
+			or client.name == "ruby_lsp"
+			or client.name == "ts_ls"
+			or client.name == "tailwindcss"
+		then
+			client.server_capabilities.documentFormattingProvider = false
+			client.server_capabilities.documentRangeFormattingProvider = false
+		end
+
+		-- Enable virtual text document color for supported language servers.
+		if client:supports_method("textDocument/documentColor") and vim.lsp.document_color then
+			lsp.document_color.enable(true, { bufnr = 0 }, { style = "▮ " })
+		end
+
+		-- Tailwind LSP trigger characters are annoying, disable them.
+		--
+		-- Note, to list current trigger characters run this command:
+		--   :lua print(vim.inspect(vim.lsp.buf_get_clients()[1].server_capabilities.completionProvider.triggerCharacters))
+		if client.name == "tailwindcss" then
+			client.server_capabilities.completionProvider.triggerCharacters = {}
 		end
 	end,
 })
