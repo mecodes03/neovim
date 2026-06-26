@@ -12,7 +12,7 @@ return {
 		opts = {
 			render = "virtual", -- "foreground" / "background" / "virtual"
 			enable_named_colors = false,
-			enable_tailwind = true,
+			enable_tailwind = false,
 		},
 	},
 
@@ -52,5 +52,8 @@ return {
 			-- or leave it empty to use the default settings
 			-- refer to the configuration section below
 		},
+	},
+	{
+		"tpope/vim-vinegar",
 	},
 }
