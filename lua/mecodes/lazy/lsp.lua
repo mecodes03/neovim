@@ -44,20 +44,9 @@ return {
 				},
 			})
 
-			------------------------------------
-			-- Configure the Language Servers --
-			------------------------------------
-
-			-- Notify language servers about the LSP capabilities that Neovim supports.
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			-- Disable client-side watch-files for now, it is slow (see Neovim #23291).
-			-- Remove this workaround when #23291 is resolved.
-			capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
-
 			-- vim.lsp.config() is what automatic_enable uses (Neovim 0.11+)
 			vim.lsp.config("*", {
 				capabilities = capabilities,
-				flags = { debounce_text_changes = 300 },
 			})
 
 			vim.lsp.config("lua_ls", {
@@ -69,10 +58,9 @@ return {
 					},
 				},
 			})
-			local nvim_lsp = require("lspconfig")
-			local buf_get_name = vim.api.nvim_buf_get_name
 
 			vim.lsp.config("tailwindcss", {
+				workspace_required = true,
 				filetypes = {
 					"html",
 					"css",
@@ -81,77 +69,38 @@ return {
 					"typescriptreact",
 				},
 				root_dir = function(bufnr, on_dir)
-					on_dir(nvim_lsp.util.root_pattern("bun.lock")(buf_get_name(bufnr)))
-				end,
-			})
+					local fname = vim.api.nvim_buf_get_name(bufnr)
+					-- Lockfiles only exist at the workspace root, never in sub-packages.
+					-- This ensures a single LSP instance per monorepo.
+					local lockfile = vim.fs.find({
+						"pnpm-lock.yaml",
+						"pnpm-workspace.yaml",
+						"yarn.lock",
+						"bun.lockb",
+						"bun.lock",
+						"package-lock.json",
+					}, { path = fname, upward = true })[1]
 
-			local function translate_ts_diagnostic_message(message, code)
-				local ok, translator = pcall(require, "ts-error-translator")
-				if not ok then
-					return message
-				end
-
-				local message_with_code = code and ("TS" .. tostring(code) .. ": " .. message) or message
-				local parsed = translator.parse_errors(message_with_code)
-				if #parsed > 0 and parsed[1].improvedError then
-					return parsed[1].improvedError.body
-				end
-
-				return message
-			end
-
-			local function translate_tsgo_pull_diagnostics(err, result, ctx, config)
-				if result and result.items then
-					for _, diagnostic in ipairs(result.items) do
-						if diagnostic.message then
-							diagnostic.message = translate_ts_diagnostic_message(diagnostic.message, diagnostic.code)
-						end
+					if lockfile then
+						return on_dir(vim.fs.dirname(lockfile))
 					end
-				end
 
-				vim.lsp.diagnostic.on_diagnostic(err, result, ctx, config)
-			end
+					-- Fallback for non-monorepo projects
+					local config_file = vim.fs.find({
+						"tailwind.config.js",
+						"tailwind.config.ts",
+						"tailwind.config.mjs",
+						"tailwind.config.cjs",
+						"postcss.config.js",
+						"postcss.config.mjs",
+						"postcss.config.ts",
+						"postcss.config.cjs",
+					}, { path = fname, upward = true })[1]
 
-			vim.lsp.config("tsgo", {
-				handlers = {
-					["textDocument/diagnostic"] = translate_tsgo_pull_diagnostics,
-				},
-			})
-			vim.lsp.config("jsonls", {
-				settings = {
-					json = {
-						validate = { enable = true },
-						format = { enable = false },
-					},
-				},
-				handlers = {
-					["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
-						-- jsonls reports JSONC trailing commas/comments as parser diagnostics
-						-- (codes 519/521). Keep schema diagnostics, but drop these false positives.
-						if result and result.diagnostics then
-							local bufnr = vim.uri_to_bufnr(result.uri)
-							if vim.bo[bufnr].filetype == "jsonc" then
-								result.diagnostics = vim.tbl_filter(function(diagnostic)
-									local code = tostring(diagnostic.code or "")
-									return code ~= "519" and code ~= "521"
-								end, result.diagnostics)
-							end
-						end
-
-						vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
-					end,
-					["textDocument/diagnostic"] = function(err, result, ctx, config)
-						-- Nvim 0.12 uses LSP pull diagnostics for jsonls, so filter there too.
-						if result and result.items and ctx.bufnr and vim.bo[ctx.bufnr].filetype == "jsonc" then
-							result.items = vim.tbl_filter(function(diagnostic)
-								local code = tostring(diagnostic.code or "")
-								return code ~= "519" and code ~= "521"
-							end, result.items)
-						end
-
-						vim.lsp.diagnostic.on_diagnostic(err, result, ctx, config)
-					end,
-				},
+					if config_file then
+						return on_dir(vim.fs.dirname(config_file))
+					end
+				end,
 			})
 
 			vim.lsp.config("solidity_ls_nomicfoundation", {

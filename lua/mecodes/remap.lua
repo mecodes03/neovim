@@ -160,3 +160,14 @@ end, { silent = true, desc = "Toggle Cursorline" })
 
 -- close quickfix
 vim.keymap.set("n", "<leader>q", "<cmd>cclose<CR>", { desc = "close quickfix" })
+
+vim.keymap.set("n", "<leader>tw", function()
+	local clients = vim.lsp.get_clients({ name = "tailwindcss" })
+	if #clients > 0 then
+		vim.cmd("LspStop tailwindcss")
+		print("tailwind stopped")
+	else
+		vim.cmd("LspStart tailwindcss")
+		print("tailwind started")
+	end
+end, { desc = "Toggle Tailwind LSP" })
