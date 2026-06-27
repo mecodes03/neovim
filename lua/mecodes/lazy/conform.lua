@@ -35,6 +35,7 @@ return {
 
 			prisma = { "prisma_fmt" },
 			graphql = { "prettier" },
+			scala = { "scalafmt" },
 		},
 
 		formatters = {
@@ -66,6 +67,11 @@ return {
 					"--indent-width",
 					constants.INDENT_SIZE,
 				},
+			},
+
+			scala = {
+				command = "scalafmt",
+				args = { "$filename" },
 			},
 		},
 	},
