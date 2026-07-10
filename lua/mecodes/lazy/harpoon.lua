@@ -10,7 +10,7 @@ return {
 			harpoon:setup({})
 
 			-- List Using Telescope
-			vim.keymap.set("n", "<leader>lh", function()
+			vim.keymap.set("n", "<leader>A", function()
 				harpoon.ui:toggle_quick_menu(harpoon:list())
 			end, { desc = "Open harpoon window [telescope]" })
 
