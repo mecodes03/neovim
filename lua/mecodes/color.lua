@@ -1,4 +1,4 @@
-DefaultColorScheme = "gruvbox-material"
+DefaultColorScheme = "rose-pine"
 IsTransparency = false
 
 return {
