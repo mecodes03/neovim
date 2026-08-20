@@ -2,33 +2,19 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
+		lazy = false,
+		opts = {
+			install_dir = vim.fn.stdpath("data") .. "/site",
+		},
 		config = function()
-			require("nvim-treesitter.configs").setup({
-				-- A list of parser names, or "all"
-				ensure_installed = {},
-				sync_install = false, -- Install parsers synchronously (only applied to `ensure_installed`)
-				-- Recommendation: set to false if you don"t have `tree-sitter` CLI installed locally
-				auto_install = true, -- Automatically install missing parsers when entering buffer
-				indent = { enable = true, disable = { "yaml", "python" } },
-				highlight = {
-					-- `false` will disable the whole extension
-					enable = true,
-					disable = { "" },
-					additional_vim_regex_highlighting = { "markdown" },
-				},
-				hijack_directories = {
-					enable = true,
-					auto_open = true,
-				},
-				-- EXTENSIONS
-				-- Autopair brackets, strings etc. (windwp/nvim-autopairs)
-				autopairs = {
-					enable = true,
-				},
-			})
+			-- treesitter fold support
+			vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+			-- treesitter fold as default
+			vim.opt.foldmethod = "expr"
+			vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 		end,
 	},
-
 	{
 		-- Auto-tags for html, jsx, etc.
 		"windwp/nvim-ts-autotag",
