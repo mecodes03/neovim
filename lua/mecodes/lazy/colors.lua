@@ -64,31 +64,6 @@ end
 
 return {
 	{
-		"sainnhe/gruvbox-material",
-		name = "gruvbox-material",
-		priority = 1000,
-		init = function()
-			vim.opt.termguicolors = true
-		end,
-		config = function()
-			vim.cmd("colorscheme gruvbox-material")
-
-			local hl_overrides = {
-				NormalFloat = { bg = "#3a3735" },
-				FloatBorder = { bg = "#3a3735" },
-				MiniFilesTitle = { bg = "#3a3735", fg = "#ebdbb2" },
-				MiniFilesTitleFocused = { bg = "#3a3735", fg = "#ebdbb2", bold = true },
-			}
-			for key, value in pairs(hl_overrides) do
-				vim.api.nvim_set_hl(0, key, value)
-			end
-
-			if color.color_scheme == "gruvbox-material" then
-				ColorMyPencils("gruvbox-material")
-			end
-		end,
-	},
-	{
 		"folke/tokyonight.nvim",
 		name = "tokyonight",
 		config = function()
@@ -171,6 +146,6 @@ return {
 			if color.color_scheme == "rose-pine" then
 				ColorMyPencils("rose-pine")
 			end
-		end,
+	end,
 	},
 }
