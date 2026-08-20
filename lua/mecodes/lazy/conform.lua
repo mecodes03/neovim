@@ -12,6 +12,7 @@ return {
 	opts = {
 		formatters_by_ft = {
 			["_"] = { "trim_whitespace" },
+			sh = { "shfmt" },
 			lua = { "stylua" },
 			rust = { "rustfmt", lsp_format = "fallback" },
 			json = { "fixjson" },
