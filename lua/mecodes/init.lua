@@ -83,7 +83,6 @@ autocmd("FileType", {
 
 local cmd = vim.cmd
 local lsp = vim.lsp
-local bo = vim.bo
 
 autocmd("LspAttach", {
 	group = MecodesGroup,
