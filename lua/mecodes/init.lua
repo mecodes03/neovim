@@ -127,8 +127,8 @@ autocmd("LspAttach", {
 			vim.lsp.buf.signature_help({ border = "rounded", max_height = 25, max_width = 90 })
 		end, { buffer = args.buf, silent = true, desc = "Signature Help Under Cursor" })
 
-		vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<cr>", { buffer = args.buf, silent = true })
-		vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>", { buffer = args.buf, silent = true })
+		vim.keymap.set("n", "<leader>li", "<cmd>checkhealth vim.lsp<cr>", { buffer = args.buf, silent = true })
+		vim.keymap.set("n", "<leader>lr", "<cmd>lsp restart<cr>", { buffer = args.buf, silent = true })
 		vim.keymap.set("n", "<leader>ih", function()
 			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf }), { bufnr = args.buf })
 		end, { buffer = args.buf, silent = true, desc = "Inlay Hint Toggle" })
