@@ -9,6 +9,9 @@ return {
 	-- init = function()
 	-- 	vim.o.formatexpr = [[v:lua.require'conform'.formatexpr()]]
 	-- end,
+	-- This will provide type hinting with LuaLS
+	---@module "conform"
+	---@type conform.setupOpts
 	opts = {
 		formatters_by_ft = {
 			["_"] = { "trim_whitespace" },
