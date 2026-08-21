@@ -36,10 +36,7 @@ return {
 					"lua_ls",
 					"rust_analyzer",
 					"gopls",
-					-- "ts_ls", -- commenting this out so we can use some other faster ts lsp :)
-					"tsgo",
 					"html",
-					-- haven't added solidity, but we have installed using Mason
 				},
 			})
 
