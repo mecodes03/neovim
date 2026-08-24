@@ -184,7 +184,7 @@ return {
 		-- tags
 		vim.keymap.set("n", "<leader>otc", function()
 			vim.cmd("Obsidian toc")
-		end, { desc = "Obsidian: Tags" })
+		end, { desc = "Obsidian: Table of contents" })
 
 		-- rename note
 		vim.keymap.set("n", "<leader>or", function()
