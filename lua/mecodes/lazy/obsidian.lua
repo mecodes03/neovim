@@ -45,6 +45,37 @@ return {
 				},
 			},
 		},
+		note_id_func = function(title)
+			local suffix = ""
+			if title ~= nil then
+				suffix = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
+			else
+				for _ = 1, 4 do
+					suffix = suffix .. string.char(math.random(65, 90))
+				end
+			end
+			return tostring(os.time()) .. "-" .. suffix
+		end,
+
+		note_frontmatter = {
+			func = function(note)
+				if note.title then
+					note:add_alias(note.title)
+				end
+
+				note:add_tag("notes")
+
+				local out = { id = note.id, aliases = note.aliases, tags = note.tags }
+
+				if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+					for k, v in pairs(note.metadata) do
+						out[k] = v
+					end
+				end
+
+				return out
+			end,
+		},
 	},
 
 	config = function(_, opts)
@@ -116,7 +147,7 @@ return {
 		-- open inbox
 		vim.keymap.set("n", "<leader>oi", function()
 			-- TODO: this should be conditional (open current workspace inbox.md file)
-			vim.cmd("e /home/mecodes/vault/work/inbox/inbox.md")
+			vim.cmd("e /home/mecodes/vault/work/inbox.md")
 		end, { desc = "Obsidian: Inbox" })
 
 		-- paste image
@@ -125,13 +156,12 @@ return {
 		end, { desc = "Obsidian: Paste image" })
 
 		-- Link Note to Inline Text
-		vim.keymap.set({ "n", "v" }, "<leader>oli", function()
-			local query = vim.fn.input("Query > ")
-			vim.cmd("Obsidian link" .. " " .. query)
+		vim.keymap.set({ "v" }, "<leader>oli", function()
+			vim.cmd("Obsidian link")
 		end, { desc = "Obsidian: Link Note to Inline Visual Text", noremap = true })
 
 		-- Create new Note and Link to Selected Text
-		vim.keymap.set({ "v" }, "<leader>ol", function()
+		vim.keymap.set({ "v" }, "<leader>oln", function()
 			local title = vim.fn.input("Note Title > ")
 			vim.cmd("Obsidian link_new" .. " " .. title)
 		end, { desc = "Obsidian: Create and Link Note to Inline Visual Text", noremap = true })
@@ -147,7 +177,12 @@ return {
 		end, { desc = "Obsidian: Backlinks" })
 
 		-- tags
-		vim.keymap.set("n", "<leader>ot", function()
+		vim.keymap.set("n", "<leader>ott", function()
+			vim.cmd("Obsidian tags")
+		end, { desc = "Obsidian: Tags" })
+
+		-- tags
+		vim.keymap.set("n", "<leader>otc", function()
 			vim.cmd("Obsidian toc")
 		end, { desc = "Obsidian: Tags" })
 
