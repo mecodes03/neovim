@@ -2,19 +2,13 @@ return {
 	"obsidian-nvim/obsidian.nvim",
 	version = "*", -- use latest release, remove to use latest commit
 	lazy = true,
-	-- commenting event out since obsidian.nvim gets loaded when entering vault
-	-- event = {
-	-- 	"BufReadPre " .. vim.fn.expand("~") .. "/vault/*.md",
-	-- 	"BufNewFile " .. vim.fn.expand("~") .. "/vault/*.md",
-
-	-- 	"VimEnter " .. vim.fn.expand("~") .. "/vault/*.md", -- this doesn't seem to work, so vimenter in init.lua is needed.
-	-- },
 	opts = {
 		legacy_commands = false, -- this will be removed in 4.0.0
+		new_notes_location = "notes",
 		workspaces = {
 			{
 				name = "personal",
-				path = "~/vault/personal",
+				path = "/home/mecodes/vault/personal",
 				overrides = {
 					notes_subdir = "notes",
 					daily_notes = {
@@ -33,7 +27,7 @@ return {
 			},
 			{
 				name = "work",
-				path = "~/vault/work",
+				path = "/home/mecodes/vault/work",
 				overrides = {
 					notes_subdir = "notes",
 					daily_notes = {
@@ -51,183 +45,34 @@ return {
 				},
 			},
 		},
-
-		notes_subdir = "notes",
-		-- use_advanced_uri = true,
-
-		-- Optional, customize how note IDs are generated given an optional title.
-		---@param title string|?
-		---@return string
-		note_id_func = function(title)
-			-- Create note IDs in a Zettelkasten format with a timestamp and a suffix.
-			-- In this case a note with the title 'My new note' will be given an ID that looks
-			-- like '1657296016-my-new-note', and therefore the file name '1657296016-my-new-note.md'
-			local suffix = ""
-			if title ~= nil then
-				-- If title is given, transform it into valid file name.
-				suffix = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
-			else
-				-- If title is nil, just add 4 random uppercase letters to the suffix.
-				for _ = 1, 4 do
-					suffix = suffix .. string.char(math.random(65, 90))
-				end
-			end
-			return tostring(os.time()) .. "-" .. suffix
-		end,
-
-		-- Optional, alternatively you can customize the frontmatter data.
-		---@return table
-		note_frontmatter_func = function(note)
-			-- Add the title of the note as an alias.
-			if note.title then
-				note:add_alias(note.title)
-			end
-
-			note:add_tag("notes")
-
-			-- local path = vim.api.nvim_buf_get_name(0)
-			-- if path:find("/home/mecodes/vault/personal/notes/") or path:find("/home/mecodes/vault/personal/notes/") then
-			-- note:add_tag("notes")
-			-- end
-
-			local out = { id = note.id, aliases = note.aliases, tags = note.tags }
-
-			-- `note.metadata` contains any manually added fields in the frontmatter.
-			-- So here we just make sure those fields are kept in the frontmatter.
-			if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-				for k, v in pairs(note.metadata) do
-					out[k] = v
-				end
-			end
-
-			return out
-		end,
-
-		-- Optional, for templates (see below).
-		templates = {
-			folder = "templates",
-			date_format = "%Y-%m-%d",
-			time_format = "%H:%M",
-			-- A map for custom variables, the key should be the variable and the value a function
-			substitutions = {},
-		},
-
-		-- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
-		-- URL it will be ignored but you can customize this behavior here.
-		---@param url string
-		follow_url_func = function(url)
-			-- Open the URL in the default web browser.
-			-- vim.fn.jobstart({ "open", url }) -- Mac OS
-			-- -- vim.fn.jobstart({"xdg-open", url})  -- linux
-			-- -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
-			vim.ui.open(url) -- need Neovim 0.10.0+
-		end,
 	},
 
 	config = function(_, opts)
-		local obsidian = require("obsidian")
-
-		obsidian.setup(opts)
-
-		local client = obsidian.get_client()
-		local commands = require("obsidian.commands")
-		local log = require("obsidian.log")
-		local RefTypes = require("obsidian.search").RefTypes
-		local util = require("obsidian.util")
-
-		-- obsidian.nvim hardcodes `wsl-open` on WSL; replace the command to launch the Linux app directly.
-		local function open_in_wsl_obsidian(path)
-			if vim.fn.executable("obsidian") == 0 then
-				log.err("'obsidian' executable was not found in WSL")
-				return
-			end
-
-			path = tostring(client:vault_relative_path(path, { strict = true }))
-
-			local encoded_vault = util.urlencode(client:vault_name())
-			local encoded_path = util.urlencode(path)
-			local uri
-
-			if client.opts.use_advanced_uri then
-				local line = vim.api.nvim_win_get_cursor(0)[1] or 1
-				uri = ("obsidian://advanced-uri?vault=%s&filepath=%s&line=%i"):format(encoded_vault, encoded_path, line)
-			else
-				uri = ("obsidian://open?vault=%s&file=%s"):format(encoded_vault, encoded_path)
-			end
-
-			vim.fn.jobstart({ "obsidian", "--no-sandbox", uri }, {
-				detach = true,
-				on_exit = function(_, exit_code)
-					if exit_code ~= 0 then
-						log.err("obsidian command failed with exit code '%s'", exit_code)
-					end
-				end,
-			})
-		end
-
-		pcall(vim.api.nvim_del_user_command, "ObsidianOpen")
-
-		vim.api.nvim_create_user_command("ObsidianOpen", function(data)
-			local search_term
-
-			if data.args and data.args:len() > 0 then
-				search_term = data.args
-			else
-				local cursor_link, _, ref_type = util.parse_cursor_link()
-				if cursor_link ~= nil and ref_type ~= RefTypes.NakedUrl and ref_type ~= RefTypes.FileUrl then
-					search_term = cursor_link
-				end
-			end
-
-			if search_term then
-				client:resolve_note_async_with_picker_fallback(search_term, function(note)
-					vim.schedule(function()
-						open_in_wsl_obsidian(note.path)
-					end)
-				end, { prompt_title = "Select note to open" })
-				return
-			end
-
-			local bufname = vim.api.nvim_buf_get_name(0)
-			local path = client:vault_relative_path(bufname, { strict = true })
-
-			if path == nil then
-				log.err("Current buffer '%s' does not appear to be inside the vault", bufname)
-				return
-			end
-
-			open_in_wsl_obsidian(path)
-		end, {
-			nargs = "?",
-			desc = "Open in the Obsidian app",
-			complete = function(arg_lead, cmd_line, cursor_pos)
-				return commands.complete_args_search(client, arg_lead, cmd_line, cursor_pos)
-			end,
-		})
+		require("obsidian").setup(opts)
 
 		-- workspace switching
 		vim.keymap.set("n", "<leader>wp", function()
-			vim.cmd("ObsidianWorkspace personal")
+			vim.cmd("Obsidian workspace personal")
 			vim.fn.chdir("/home/mecodes/vault/personal")
 			vim.cmd("e .")
 		end, { desc = "Obsidian: personal vault" })
 
 		vim.keymap.set("n", "<leader>ww", function()
-			vim.cmd("ObsidianWorkspace work") -- fixed: was personal
+			vim.cmd("Obsidian workspace work") -- fixed: was personal
 			vim.fn.chdir("/home/mecodes/vault/work")
 			vim.cmd("e .")
 		end, { desc = "Obsidian: work vault" })
 
 		-- open in obsidian app
 		vim.keymap.set("n", "<leader>oo", function()
-			vim.cmd("ObsidianOpen")
+			vim.cmd("Obsidian open")
 		end, { desc = "Obsidian: Open in app" })
 
 		-- new note
 		vim.keymap.set("n", "<leader>on", function()
 			local title = vim.fn.input("Note Title > ")
 			if title ~= "" then
-				vim.cmd("ObsidianNew " .. title)
+				vim.cmd("Obsidian new " .. title)
 			end
 		end, { desc = "Obsidian: New note" })
 
@@ -237,7 +82,7 @@ return {
 		vim.keymap.set("n", "<leader>sf", function()
 			local cwd = vim.fn.getcwd()
 			if cwd:find("/home/mecodes/vault") then
-				vim.cmd("ObsidianQuickSwitch")
+				vim.cmd("Obsidian quick_switch")
 			else
 				builtin.git_files()
 			end
@@ -247,7 +92,7 @@ return {
 		vim.keymap.set("n", "<leader>sg", function()
 			local cwd = vim.fn.getcwd()
 			if cwd:find("/home/mecodes/vault") then
-				vim.cmd("ObsidianSearch")
+				vim.cmd("Obsidian search")
 			else
 				builtin.git_files()
 			end
@@ -255,61 +100,62 @@ return {
 
 		-- yesterday's daily note
 		vim.keymap.set("n", "<leader>oy", function()
-			vim.cmd("ObsidianYesterday")
+			vim.cmd("Obsidian yesterday")
 		end, { desc = "Obsidian: Yesterday's daily note" })
 
 		-- today's daily note
 		vim.keymap.set("n", "<leader>oj", function()
-			vim.cmd("ObsidianToday")
+			vim.cmd("Obsidian today")
 		end, { desc = "Obsidian: Today's daily note" })
 
 		-- tomorrow's daily note
 		vim.keymap.set("n", "<leader>od", function()
-			vim.cmd("ObsidianTomorrow")
+			vim.cmd("Obsidian tomorrow")
 		end, { desc = "Obsidian: Today's daily note" })
 
 		-- open inbox
 		vim.keymap.set("n", "<leader>oi", function()
-			vim.cmd("e /home/mecodes/vault/personal/inbox/inbox.md")
+			-- TODO: this should be conditional (open current workspace inbox.md file)
+			vim.cmd("e /home/mecodes/vault/work/inbox/inbox.md")
 		end, { desc = "Obsidian: Inbox" })
 
 		-- paste image
 		vim.keymap.set("n", "<leader>op", function()
-			vim.cmd("ObsidianPasteImg")
+			vim.cmd("Obsidian paste_img")
 		end, { desc = "Obsidian: Paste image" })
 
 		-- Link Note to Inline Text
 		vim.keymap.set({ "n", "v" }, "<leader>oli", function()
 			local query = vim.fn.input("Query > ")
-			vim.cmd("ObsidianLink " .. query)
+			vim.cmd("Obsidian link" .. " " .. query)
 		end, { desc = "Obsidian: Link Note to Inline Visual Text", noremap = true })
 
-		-- Create new Note and Link to Inline Text
-		vim.keymap.set({ "n", "v" }, "<leader>oln", function()
+		-- Create new Note and Link to Selected Text
+		vim.keymap.set({ "v" }, "<leader>ol", function()
 			local title = vim.fn.input("Note Title > ")
-			vim.cmd("ObsidianLinkNew " .. title)
+			vim.cmd("Obsidian link_new" .. " " .. title)
 		end, { desc = "Obsidian: Create and Link Note to Inline Visual Text", noremap = true })
 
-		-- follow link under cursor
-		vim.keymap.set("n", "<leader>gl", function()
-			vim.cmd("ObsidianFollowLink")
+		-- extract note
+		vim.keymap.set("v", "<leader>oe", function()
+			vim.cmd("Obsidian extract_note")
 		end, { desc = "Obsidian: Follow link", noremap = true })
 
 		-- backlinks
 		vim.keymap.set("n", "<leader>ob", function()
-			vim.cmd("ObsidianBacklinks")
+			vim.cmd("Obsidian backlinks")
 		end, { desc = "Obsidian: Backlinks" })
 
 		-- tags
 		vim.keymap.set("n", "<leader>ot", function()
-			vim.cmd("ObsidianTags")
+			vim.cmd("Obsidian toc")
 		end, { desc = "Obsidian: Tags" })
 
 		-- rename note
 		vim.keymap.set("n", "<leader>or", function()
 			local name = vim.fn.input("Rename to > ")
 			if name ~= "" then
-				vim.cmd("ObsidianRename " .. name)
+				vim.cmd("Obsidian rename " .. name)
 			end
 		end, { desc = "Obsidian: Rename note" })
 	end,
