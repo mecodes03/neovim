@@ -153,19 +153,19 @@ autocmd("LspAttach", {
 			})
 		end
 
-		local orig = vim.lsp.util.convert_input_to_markdown_lines
+		-- local orig = vim.lsp.util.convert_input_to_markdown_lines
 
 		-- remove ugly urls
-		vim.lsp.util.convert_input_to_markdown_lines = function(input, ...)
-			local lines = orig(input, ...)
-
-			for i, line in ipairs(lines) do
-				-- remove raw jdt:// links
-				lines[i] = line:gsub("%(jdt://[^%)]+%)", "")
-			end
-
-			return lines
-		end
+		-- vim.lsp.util.convert_input_to_markdown_lines = function(input, ...)
+		-- 	local lines = orig(input, ...)
+		--
+		-- 	for i, line in ipairs(lines) do
+		-- 		-- remove raw jdt:// links
+		-- 		lines[i] = line:gsub("%(jdt://[^%)]+%)", "")
+		-- 	end
+		--
+		-- 	return lines
+		-- end
 
 		local function is_large(buf)
 			local max_filesize = 100 * 1024 -- 100 KB
@@ -204,7 +204,7 @@ autocmd("LspAttach", {
 		end
 
 		-- Tailwind LSP trigger characters are annoying, disable them.
-		--
+
 		-- Note, to list current trigger characters run this command:
 		--   :lua print(vim.inspect(vim.lsp.buf_get_clients()[1].server_capabilities.completionProvider.triggerCharacters))
 		if client.name == "tailwindcss" then

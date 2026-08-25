@@ -31,7 +31,7 @@ return {
 			require("mason").setup()
 			require("mason-lspconfig").setup({
 				-- jdtls is handled separately by mecodes/jdtls.lua via FileType autocmd
-				automatic_enable = { exclude = { "jdtls" } },
+				automatic_enable = { exclude = { "jdtls", "tailwindcss" } },
 				ensure_installed = {
 					"lua_ls",
 					"rust_analyzer",
