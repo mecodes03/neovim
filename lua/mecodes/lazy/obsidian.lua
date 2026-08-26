@@ -142,7 +142,7 @@ return {
 		-- tomorrow's daily note
 		vim.keymap.set("n", "<leader>od", function()
 			vim.cmd("Obsidian tomorrow")
-		end, { desc = "Obsidian: Today's daily note" })
+		end, { desc = "Obsidian: Tomorrow's daily note" })
 
 		-- open inbox
 		vim.keymap.set("n", "<leader>oi", function()
@@ -169,7 +169,7 @@ return {
 		-- extract note
 		vim.keymap.set("v", "<leader>oe", function()
 			vim.cmd("Obsidian extract_note")
-		end, { desc = "Obsidian: Follow link", noremap = true })
+		end, { desc = "Obsidian: Extract Note", noremap = true })
 
 		-- backlinks
 		vim.keymap.set("n", "<leader>ob", function()
