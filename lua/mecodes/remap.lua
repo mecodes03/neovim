@@ -49,7 +49,8 @@ vim.keymap.set("v", "<", "<gv", { desc = "Indent left and reselect" })
 vim.keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
 
 vim.keymap.set("n", "<leader>d", function()
-	vim.diagnostic.open_float({ max_height = 25, max_width = 90 })
+	vim.diagnostic.open_float()
+	-- vim.diagnostic.open_float({ max_height = 25, max_width = 90 })
 end, { silent = true, desc = "Open Diagnostic Float" })
 
 vim.keymap.set("n", "<leader>[d", function()

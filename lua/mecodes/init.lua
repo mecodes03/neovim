@@ -108,7 +108,8 @@ autocmd("LspAttach", {
 		end, { buffer = args.buf, silent = true, desc = "List References Under Cursor" })
 
 		vim.keymap.set("n", "K", function()
-			vim.lsp.buf.hover({ border = "rounded", max_height = 25, max_width = 90 })
+			vim.lsp.buf.hover()
+			-- vim.lsp.buf.hover({ border = "rounded", max_height = 25, max_width = 90 })
 		end, { buffer = args.buf, silent = true, desc = "Hover" })
 
 		vim.keymap.set("n", "<leader>ws", function()
@@ -124,7 +125,8 @@ autocmd("LspAttach", {
 		end, { buffer = args.buf, silent = true, desc = "Rename Buffer" })
 
 		vim.keymap.set("i", "<C-s>", function()
-			vim.lsp.buf.signature_help({ border = "rounded", max_height = 25, max_width = 90 })
+			-- vim.lsp.buf.signature_help({ max_height = 25, max_width = 90 })
+			vim.lsp.buf.signature_help()
 		end, { buffer = args.buf, silent = true, desc = "Signature Help Under Cursor" })
 
 		vim.keymap.set("n", "<leader>li", "<cmd>checkhealth vim.lsp<cr>", { buffer = args.buf, silent = true })

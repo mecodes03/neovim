@@ -120,17 +120,20 @@ return {
 						luasnip.lsp_expand(args.body) -- For `luasnip` users.
 					end,
 				},
-				window = {
-					-- explicitly set border + winhighlight (bordered() alone doesn't work, see nvim-cmp#2042)
-					completion = {
-						border = "rounded",
-						-- winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
-					},
-					documentation = {
-						border = "rounded",
-						-- winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
-					},
-				},
+				-- INFO: this code block is important for changing the default highlights.
+				-- window = {
+				-- 	-- explicitly set border + winhighlight (bordered() alone doesn't work, see nvim-cmp#2042)
+				-- 	completion = {
+				-- 		-- border = "rounded",
+				-- 		winhighlight = "Normal:CmpPmenu,FloatBorder:CmpPmenuBorder,CursorLine:CmpSel,Search:None",
+				-- 		-- winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+				-- 	},
+				-- 	documentation = {
+				-- 		-- border = "rounded",
+				-- 		winhighlight = "Normal:CmpDoc,FloatBorder:CmpDocBorder,Search:None",
+				-- 		-- winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+				-- 	},
+				-- },
 
 				mapping = cmp.mapping.preset.insert({
 					-- Scroll the documentation window [b]ack / [f]orward
@@ -201,7 +204,7 @@ return {
 					prefix = "●",
 				},
 				float = {
-					border = "rounded",
+					-- border = "rounded",
 					source = "if_many",
 					header = "Diagnostics",
 					focusable = true,
