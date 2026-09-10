@@ -215,22 +215,22 @@ return {
 		end,
 	},
 
-	{
-		"mfussenegger/nvim-jdtls",
-		ft = "java",
-		dependencies = {
-			"mfussenegger/nvim-dap",
-			"ray-x/lsp_signature.nvim",
-		},
-	},
 	-- {
-	-- 	"ray-x/lsp_signature.nvim",
-	-- 	event = "InsertEnter",
-	-- 	opts = {
-	-- 		bind = true,
-	-- 		handler_opts = { border = "rounded" },
-	-- 		floating_window = false,
-	-- 		max_width = 80,
+	-- 	"mfussenegger/nvim-jdtls",
+	-- 	ft = "java",
+	-- 	dependencies = {
+	-- 		"mfussenegger/nvim-dap",
+	-- 		"ray-x/lsp_signature.nvim",
 	-- 	},
 	-- },
+	{
+		"ray-x/lsp_signature.nvim",
+		event = "InsertEnter",
+		opts = {
+			bind = true,
+			handler_opts = {},
+			floating_window = false,
+			max_width = 80,
+		},
+	},
 }
