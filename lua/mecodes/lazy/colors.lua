@@ -143,9 +143,18 @@ return {
 				enable = { terminal = true },
 			})
 
+			-- Currently this doens't seem to be the correct thing, it doesn't seem to apply when calling ColorMyPencils or changing back to rose-pine before changing it to some other theme. and seems like we need to specity winhighlight in cmp.setup.window as we currently have (but question is WHY? why doesn't it work with just default) cmp.setup.window
+			-- TODO: the below code is from grok.. make it
+			-- Define distinct highlight groups (pick colors that work with your colorscheme)
+			-- vim.api.nvim_set_hl(0, "CmpPmenu", { bg = "#313244", fg = "#cdd6f4" })   -- completion menu bg
+			-- vim.api.nvim_set_hl(0, "CmpSel", { bg = "#1e1e2e", fg = "#cdd6f4", bold = true }) -- selected item
+			-- vim.api.nvim_set_hl(0, "CmpDoc", { bg = "#1e1e2e", fg = "#cdd6f4" })     -- docs window bg (different!)
+			-- vim.api.nvim_set_hl(0, "CmpDocBorder", { fg = "#a6e3a1", bg = "#181825" }) -- docs border
+			-- vim.api.nvim_set_hl(0, "CmpPmenuBorder", { fg = "#89b4fa", bg = "#1e1e2e" }) -- completion border
+
 			if color.color_scheme == "rose-pine" then
 				ColorMyPencils("rose-pine")
 			end
-	end,
+		end,
 	},
 }

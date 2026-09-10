@@ -1,5 +1,5 @@
 DefaultColorScheme = "rose-pine"
-IsTransparency = true
+IsTransparency = false
 
 return {
 	color_scheme = DefaultColorScheme,
