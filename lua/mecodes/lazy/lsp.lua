@@ -40,6 +40,16 @@ return {
 				},
 			})
 
+			vim.lsp.config("mytailwindlsp", {
+				cmd = { '/home/mecodes/code/projects/tailwind-lsp/target/release/tailwind-lsp', '--stdio' },
+				-- Filetypes this server should attach to
+				-- filetypes = { 'ru' },
+				-- Markers to find the project root
+				-- root_markers = { '.myproject', '.git' },
+				-- Server-specific settings passed via workspace/configuration
+				settings = {},
+			})
+
 			-- vim.lsp.config() is what automatic_enable uses (Neovim 0.11+)
 			vim.lsp.config("*", {
 				capabilities = capabilities,
