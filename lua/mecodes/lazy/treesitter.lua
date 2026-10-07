@@ -111,4 +111,9 @@ return {
 			},
 		},
 	},
+
+	-- svelte highlight
+	{
+		"evanleck/vim-svelte"
+	}
 }
