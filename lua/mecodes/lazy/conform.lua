@@ -40,6 +40,7 @@ return {
 			prisma = { "prisma_fmt" },
 			graphql = { "prettier" },
 			scala = { "scalafmt" },
+			svelte = { "prettier" },
 		},
 
 		formatters = {
