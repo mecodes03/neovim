@@ -33,10 +33,10 @@ return {
 				-- jdtls is handled separately by mecodes/jdtls.lua via FileType autocmd
 				automatic_enable = { exclude = { "jdtls", "tailwindcss" } },
 				ensure_installed = {
-					"lua_ls",
-					"rust_analyzer",
-					"gopls",
-					"html",
+					-- "lua_ls",
+					-- "rust_analyzer",
+					-- "gopls",
+					-- "html",
 				},
 			})
 
